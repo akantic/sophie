@@ -9,8 +9,8 @@ class User extends Player {
     return this._playerController;
   }
 
-  constructor() {
-    super();
+  constructor(id: string) {
+    super(id);
     this._playerController = new PlayerController(document, this);
 
   }

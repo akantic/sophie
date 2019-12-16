@@ -7,13 +7,48 @@ import { Ticker } from "pixi.js";
 import background from "../sprites/grass_background_1.jpg";
 
 class GameWorld extends Viewport {
+
+  private static instance: GameWorld;
   
-  private readonly players: Player[];
+  private _players: { [key: string]: Player }; 
+
+  private _playersIterable: Player[];
+
+  get players(): { [key: string]: Player } {
+    return this._players;
+  }
+
+  get playersI(): Player[] {
+    return this._playersIterable;
+  }
+
   private readonly _user: User;
   private readonly appTicker: Ticker; 
 
   get user(): User {
     return this._user;
+  }
+
+  static create = (options: ViewportOptions, appTicker: Ticker) => {
+    GameWorld.instance = new GameWorld(options, appTicker);
+    return GameWorld.instance;
+  }
+
+  static get = () => {
+    return GameWorld.instance;
+  }
+
+  constructor (options: ViewportOptions, appTicker: Ticker) {
+    super( { ...options, worldWidth: WORLD_WIDTH, worldHeight: WORLD_HEIGHT });
+    this._players = {};
+    this._playersIterable = [];
+    this._user = new User("JURE");
+    this.addPlayer(this._user);
+    this.appTicker = appTicker;
+    
+    this.initializeWorld();
+    this.initializeUser();
+    this.initializeInteractivity();
   }
 
   initializeWorld() {
@@ -38,20 +73,20 @@ class GameWorld extends Viewport {
     })
   }
 
-  constructor (options: ViewportOptions, appTicker: Ticker) {
-    super( { ...options, worldWidth: WORLD_WIDTH, worldHeight: WORLD_HEIGHT });
-    this.players = [];
-    this._user = new User();
-    this.appTicker = appTicker;
-    
-    this.initializeWorld();
-    this.initializeUser();
-    this.initializeInteractivity();
+  addPlayer = (player: Player) => {
+    this._players[player.id] = player;
+    this._playersIterable = Object.values(this._players);
   }
 
+  removePlayer = (playerId: string) => {
+    delete this._players[playerId];
+    this._playersIterable = Object.values(this._players);
+  }
 
-    
-  
+  getPlayer = (playerId: string) => {
+    return this._players[playerId];
+  }
+
 }
 
 export default GameWorld;

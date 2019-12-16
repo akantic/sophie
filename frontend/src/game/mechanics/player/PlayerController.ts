@@ -1,7 +1,7 @@
-
 import Player from "../../models/Player";
 import { PLAYER_SPEED } from "../../consts";
 import { networkClient } from "../../network/NetworkClient";
+import { InputStatusUpdateMessage } from "@sophie/shared"; 
 
 class PlayerController {
   
@@ -25,22 +25,30 @@ class PlayerController {
   }
 
   shoot() {
-    networkClient.send("BOOM HEADSHOT");
+    console.log("!!! KAA  BOOM !!!");
   }
 
   movement(delta: number){
+    const direction = { x: 0, y: 0 };
+
     if (this.keyState.w) {
-      this.player.position.y -= PLAYER_SPEED * delta;
+      // this.player.position.y -= PLAYER_SPEED * delta;
+      direction.y -= 1;
     }
     if (this.keyState.a) {
-      this.player.position.x -= PLAYER_SPEED * delta;
+      // this.player.position.x -= PLAYER_SPEED * delta;
+      direction.x -= 1;
     }
     if (this.keyState.s) {
-      this.player.position.y += PLAYER_SPEED * delta;
+      // this.player.position.y += PLAYER_SPEED * delta;
+      direction.y += 1;
     }
     if (this.keyState.d) {
-      this.player.position.x += PLAYER_SPEED * delta;
+      // this.player.position.x += PLAYER_SPEED * delta;
+      direction.x += 1;
     }
+
+    networkClient.send(InputStatusUpdateMessage.create(direction));
   }
 }
 
