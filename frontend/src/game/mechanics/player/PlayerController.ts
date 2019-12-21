@@ -48,7 +48,7 @@ class PlayerController {
       direction.x += 1;
     }
 
-    networkClient.send(InputStatusUpdateMessage.create(direction));
+    networkClient.send(InputStatusUpdateMessage.create(direction, this.player.rotation));
   }
 }
 

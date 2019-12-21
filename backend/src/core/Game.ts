@@ -33,8 +33,8 @@ class Game {
 
   private networkUpdate = () => {
     if (GameWorld.playersI.length > 0) {
-      const playerPositions = GameWorld.playersI.map(p => ({ playerId: p.id, position: p.body.position }));
-      NetworkServer.get().broadcast(WorldStatusUpdateMessage.create(playerPositions));
+      const playersWorldStatus = GameWorld.playersI.map(p => ({ playerId: p.id, position: p.body.position, rotation: p.body.angle }));
+      NetworkServer.get().broadcast(WorldStatusUpdateMessage.create(playersWorldStatus));
     }
   }
 

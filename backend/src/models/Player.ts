@@ -18,6 +18,10 @@ class Player {
   move = (direction: Vector) => {
     Body.setVelocity(this.body, Vector.mult(direction, PLAYER_MOVEMENT_SPEED));
   }
+
+  setRotation = (rotation: number) => { 
+    Body.setAngle(this.body, rotation);
+  }
 }
 
 export default Player;

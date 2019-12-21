@@ -3,20 +3,21 @@ import { Vector } from "matter-js";
 import MessageType from "../message/MessageType";
 import NetworkMessage from "../message/NetworkMessage";
 
-interface PlayerPosition {
+interface PlayerStatus {
   playerId: string,
   position: Vector,
+  rotation: number,
 }
 class WorldStatusUpdateMessage extends NetworkMessage {
   
-  readonly payload: PlayerPosition[];
+  readonly payload: PlayerStatus[];
   
-  constructor(payload: PlayerPosition[]) {
+  constructor(payload: PlayerStatus[]) {
     super(MessageType.WorldStatusUpdate);
     this.payload = payload;
   }
 
-  static create(payload: PlayerPosition[]) {
+  static create(payload: PlayerStatus[]) {
     return new WorldStatusUpdateMessage(payload);
   }
 

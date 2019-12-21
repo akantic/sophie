@@ -7,15 +7,18 @@ class InputStatusUpdateMessage extends NetworkMessage implements ClientMessage {
 
   playerId = null;
 
-  readonly payload: Vector;
+  readonly payload: {
+    direction: Vector,
+    rotation: number,
+  };
 
-  constructor(payload: Vector) {
+  constructor(direction: Vector, rotation: number) {
     super(MessageType.InputStatusUpdate);
-    this.payload = payload;
+    this.payload = { direction, rotation };
   }
 
-  static create(direction: Vector) {
-    return new InputStatusUpdateMessage(direction);
+  static create(direction: Vector, rotation: number) {
+    return new InputStatusUpdateMessage(direction, rotation);
   }
 
   encode = () => {
