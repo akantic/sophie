@@ -12,7 +12,7 @@ class WorldStatusUpdateMessage extends NetworkMessage {
   
   readonly payload: PlayerStatus[];
   
-  constructor(payload: PlayerStatus[]) {
+  private constructor(payload: PlayerStatus[]) {
     super(MessageType.WorldStatusUpdate);
     this.payload = payload;
   }

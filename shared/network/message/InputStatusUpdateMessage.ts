@@ -12,7 +12,7 @@ class InputStatusUpdateMessage extends NetworkMessage implements ClientMessage {
     rotation: number,
   };
 
-  constructor(direction: Vector, rotation: number) {
+  private constructor(direction: Vector, rotation: number) {
     super(MessageType.InputStatusUpdate);
     this.payload = { direction, rotation };
   }

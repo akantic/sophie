@@ -22,7 +22,7 @@ class GameWorld extends Viewport {
     return this._playersIterable;
   }
 
-  private readonly _user: User;
+  private _user!: User;
   private readonly appTicker: Ticker; 
 
   get user(): User {
@@ -42,21 +42,20 @@ class GameWorld extends Viewport {
     super( { ...options, worldWidth: WORLD_WIDTH, worldHeight: WORLD_HEIGHT });
     this._players = {};
     this._playersIterable = [];
-    this._user = new User("JURE");
-    this.addPlayer(this._user);
     this.appTicker = appTicker;
     
     this.initializeWorld();
-    this.initializeUser();
-    this.initializeInteractivity();
   }
 
   initializeWorld() {
     this.addChild(new Sprite(Texture.from(background)))
   }
 
-  initializeUser() {
+  initializeUser(id: string) {
+    this._user = new User(id);
+    this.addPlayer(this.user);
     this.addChild(this.user);
+    this.initializeInteractivity();
     this.appTicker.add((d) => {
       this.user.playerController.movement(d);
     })

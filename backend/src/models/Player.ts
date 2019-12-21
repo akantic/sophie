@@ -10,8 +10,8 @@ class Player {
 
   socket: WebSocket;
 
-  constructor(socket: WebSocket){
-    this.id = "JURE";
+  private constructor(socket: WebSocket){
+    this.id = Math.round((Math.random() * 36 ** 12)).toString(36);
     this.socket = socket;
   }
 
@@ -21,6 +21,10 @@ class Player {
 
   setRotation = (rotation: number) => { 
     Body.setAngle(this.body, rotation);
+  }
+
+  static create(socket: WebSocket) {
+    return new Player(socket);
   }
 }
 

@@ -1,5 +1,7 @@
 import { NetworkMessage, MessageType, MessageDecoder, ClientMessage } from "@sophie/shared";
 import worldStatusUpdateHandler from "./message/handlers/worldStatusUpdateHandler";
+import playerConnectionReplyHandler from "./message/handlers/playerConnectionReplyHandler";
+import GameWorld from "../models/GameWorld";
 
 class NetworkClient {
 
@@ -9,7 +11,8 @@ class NetworkClient {
     this.socket = new WebSocket("ws://localhost:8080");
 
     const handlers = {
-      [MessageType.WorldStatusUpdate]: worldStatusUpdateHandler
+      [MessageType.WorldStatusUpdate]: worldStatusUpdateHandler,
+      [MessageType.PlayerConnectionReply]: playerConnectionReplyHandler,
     }
     
     const messageDecoder = new MessageDecoder(handlers);
@@ -22,7 +25,7 @@ class NetworkClient {
   }
 
   send = (message: NetworkMessage) => {
-    (message as ClientMessage).playerId = "JURE";
+    (message as ClientMessage).playerId = GameWorld.get().user.id;;
 
     if (this.socket.readyState === WebSocket.OPEN) {
       this.socket.send(message.encode());

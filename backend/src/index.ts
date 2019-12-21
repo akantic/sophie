@@ -1,10 +1,10 @@
 import * as WebSocket from "ws";
-
 import { MessageDecoder, MessageType } from "@sophie/shared";
 
 import { connectionHandler } from "./network";
 import inputStatusUpdateHandler from "./network/message/handlers/inputStatusUpdateHandler";
 import NetworkServer from "./network/NetworkServer";
+import game from "./core/Game";
 
 const wss = new WebSocket.Server({
   port: 8080,
@@ -20,3 +20,5 @@ wss.on("connection", (ws) => connectionHandler(ws as any, messageDecoder));
 
 // Initialize network server 
 NetworkServer.create(wss);
+
+game.start();

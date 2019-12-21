@@ -1,6 +1,7 @@
 import NetworkMessage from "./NetworkMessage";
 
 enum MessageType {
+  PlayerConnectionReply,
   InputStatusUpdate,
   WorldStatusUpdate,
 }
