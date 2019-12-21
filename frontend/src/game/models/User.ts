@@ -11,8 +11,8 @@ class User extends Player {
 
   constructor(id: string) {
     super(id);
+    this.tint = 0x00ff00
     this._playerController = new PlayerController(document, this);
-
   }
 } 
 

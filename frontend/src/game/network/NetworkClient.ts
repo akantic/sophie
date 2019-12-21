@@ -1,6 +1,7 @@
 import { NetworkMessage, MessageType, MessageDecoder, ClientMessage } from "@sophie/shared";
 import worldStatusUpdateHandler from "./message/handlers/worldStatusUpdateHandler";
 import playerConnectionReplyHandler from "./message/handlers/playerConnectionReplyHandler";
+import playerJoinedHandler from "./message/handlers/playerJoinedHandler";
 import GameWorld from "../models/GameWorld";
 
 class NetworkClient {
@@ -12,6 +13,7 @@ class NetworkClient {
 
     const handlers = {
       [MessageType.WorldStatusUpdate]: worldStatusUpdateHandler,
+      [MessageType.PlayerJoined]: playerJoinedHandler,
       [MessageType.PlayerConnectionReply]: playerConnectionReplyHandler,
     }
     

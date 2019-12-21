@@ -72,9 +72,14 @@ class GameWorld extends Viewport {
     })
   }
 
+  createPlayer = (playerId: string) => {
+    this.addPlayer(new Player(playerId));
+  }
+
   addPlayer = (player: Player) => {
     this._players[player.id] = player;
     this._playersIterable = Object.values(this._players);
+    this.addChild(player);
   }
 
   removePlayer = (playerId: string) => {

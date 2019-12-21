@@ -1,5 +1,4 @@
 import Player from "../../models/Player";
-import { PLAYER_SPEED } from "../../consts";
 import { networkClient } from "../../network/NetworkClient";
 import { InputStatusUpdateMessage } from "@sophie/shared"; 
 
