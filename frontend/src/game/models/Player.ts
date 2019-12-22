@@ -1,15 +1,19 @@
-import { Sprite, Texture } from "pixi.js";
+import { Sprite, Texture, IPoint, Point } from "pixi.js";
 import circle from "../sprites/circle.png";
 
 export default class Player extends Sprite {
 
   private readonly weapon: Sprite;
 
+  actualPosition: IPoint;
+
   id: string;
 
   constructor(id: string) {
     super(Texture.from(circle));
     this.id = id;
+    this.actualPosition = new Point();
+    this.actualPosition.copyFrom(this.position);
     this.tint = 0xff0000
     this.width = this.height = 50
     this.anchor.set(0.5)

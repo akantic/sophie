@@ -3,6 +3,7 @@ import User from "./User";
 import { Sprite, Texture, interaction } from "pixi.js";
 import { Viewport, ViewportOptions } from 'pixi-viewport'
 import { WORLD_WIDTH, WORLD_HEIGHT } from "../consts"
+import { lerp } from "../utils";
 import { Ticker } from "pixi.js";
 import background from "../sprites/grass_background_1.jpg";
 
@@ -49,6 +50,11 @@ class GameWorld extends Viewport {
 
   initializeWorld() {
     this.addChild(new Sprite(Texture.from(background)))
+    this.appTicker.add((d) => {
+      this.playersI.forEach(p => {
+        p.position = lerp(p.position, p.actualPosition, 0.15);
+      });
+    });
   }
 
   initializeUser(id: string) {

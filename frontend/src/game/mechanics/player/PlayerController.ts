@@ -1,6 +1,7 @@
 import Player from "../../models/Player";
 import { networkClient } from "../../network/NetworkClient";
 import { InputStatusUpdateMessage } from "@sophie/shared"; 
+// import { PLAYER_SPEED } from "../../consts";
 
 class PlayerController {
   
