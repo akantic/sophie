@@ -83,6 +83,7 @@ class GameWorld extends Viewport {
   }
 
   removePlayer = (playerId: string) => {
+    this.removeChild(this._players[playerId]);
     delete this._players[playerId];
     this._playersIterable = Object.values(this._players);
   }

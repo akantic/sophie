@@ -25,7 +25,7 @@ class GameWorld {
   }
 
   addPlayer = (player: Player) => {
-    const body = Bodies.circle(0, 0, 1);
+    const body = Bodies.circle(0, 0, 20);
     body.friction = 0;
     body.frictionStatic = 0;
     body.frictionAir = 0.5;

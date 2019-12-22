@@ -1,4 +1,4 @@
-import { MessageDecoder, PlayerConnectionReplyMessage, PlayerJoinedMessage } from "@sophie/shared";
+import { MessageDecoder, PlayerConnectionReplyMessage, PlayerJoinedMessage, PlayerLeftMessage } from "@sophie/shared";
 
 import gameWorld from "../core/GameWorld";
 import Player from "../models/Player";
@@ -10,6 +10,7 @@ export function connectionHandler(ws: WebSocket, messageDecoder: MessageDecoder)
   const player = Player.create(ws);
   ws.onclose = () => {
     gameWorld.removePlayer(player.id)
+    NetworkServer.get().broadcast(PlayerLeftMessage.create(player.id));
     console.log(`Removed player ${player.id}`)
   };
   gameWorld.addPlayer(player);

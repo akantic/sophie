@@ -2,6 +2,7 @@ import { NetworkMessage, MessageType, MessageDecoder, ClientMessage } from "@sop
 import worldStatusUpdateHandler from "./message/handlers/worldStatusUpdateHandler";
 import playerConnectionReplyHandler from "./message/handlers/playerConnectionReplyHandler";
 import playerJoinedHandler from "./message/handlers/playerJoinedHandler";
+import playerLeftHandler from "./message/handlers/playerLeftHandler";
 import GameWorld from "../models/GameWorld";
 
 class NetworkClient {
@@ -9,11 +10,12 @@ class NetworkClient {
   private readonly socket: WebSocket;
 
   constructor() {
-    this.socket = new WebSocket("ws://localhost:8080");
+    this.socket = new WebSocket("ws://192.168.100.7:8080");
 
     const handlers = {
       [MessageType.WorldStatusUpdate]: worldStatusUpdateHandler,
       [MessageType.PlayerJoined]: playerJoinedHandler,
+      [MessageType.PlayerLeft]: playerLeftHandler,
       [MessageType.PlayerConnectionReply]: playerConnectionReplyHandler,
     }
     

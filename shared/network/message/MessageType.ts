@@ -3,6 +3,7 @@ import NetworkMessage from "./NetworkMessage";
 enum MessageType {
   PlayerConnectionReply,
   PlayerJoined,
+  PlayerLeft,
   InputStatusUpdate,
   WorldStatusUpdate,
 }
