@@ -1,22 +1,25 @@
 import Player from "../../models/Player";
 import { networkClient } from "../../network/NetworkClient";
-import { InputStatusUpdateMessage } from "@sophie/shared"; 
+import { InputStatusUpdateMessage } from "@sophie/shared";
 // import { PLAYER_SPEED } from "../../consts";
 
 class PlayerController {
-  
+
   private readonly player: Player;
 
   private readonly keyState: { [key: string]: boolean };
 
+  mouseDown: boolean;
+
   constructor(document: Document, player: Player) {
     this.player = player;
     this.keyState = {};
+    this.mouseDown = false;
     document.onkeydown = this.keyDown.bind(this);
     document.onkeyup = this.keyUp.bind(this);
   }
 
-  keyDown(e: KeyboardEvent) {    
+  keyDown(e: KeyboardEvent) {
     this.keyState[e.key] = true;
   }
 
@@ -25,10 +28,10 @@ class PlayerController {
   }
 
   shoot() {
-    console.log("!!! KAA  BOOM !!!");
+    this.mouseDown = true;
   }
 
-  movement(delta: number){
+  movement(delta: number) {
     const direction = { x: 0, y: 0 };
 
     if (this.keyState.w) {
@@ -48,7 +51,7 @@ class PlayerController {
       direction.x += 1;
     }
 
-    networkClient.send(InputStatusUpdateMessage.create(direction, this.player.rotation));
+    networkClient.send(InputStatusUpdateMessage.create(direction, this.player.rotation, this.mouseDown));
   }
 }
 

@@ -3,6 +3,7 @@ export { default as WorldStatusUpdateMessage } from "./network/message/WorldStat
 export { default as PlayerConnectionReplyMessage } from "./network/message/PlayerConnectionReplyMessage";
 export { default as PlayerJoinedMessage } from "./network/message/PlayerJoinedMessage";
 export { default as PlayerLeftMessage } from "./network/message/PlayerLeftMessage";
+export { default as ProjectileSpawnedMessage } from "./network/message/ProjectileSpawnedMessage";
 
 export { default as NetworkMessage } from "./network/message/NetworkMessage";
 export { default as MessageType } from "./network/message/MessageType";

@@ -10,8 +10,8 @@ import background from "../sprites/grass_background_1.jpg";
 class GameWorld extends Viewport {
 
   private static instance: GameWorld;
-  
-  private _players: { [key: string]: Player }; 
+
+  private _players: { [key: string]: Player };
 
   private _playersIterable: Player[];
 
@@ -24,7 +24,7 @@ class GameWorld extends Viewport {
   }
 
   private _user!: User;
-  private readonly appTicker: Ticker; 
+  private readonly appTicker: Ticker;
 
   get user(): User {
     return this._user;
@@ -39,12 +39,13 @@ class GameWorld extends Viewport {
     return GameWorld.instance;
   }
 
-  constructor (options: ViewportOptions, appTicker: Ticker) {
-    super( { ...options, worldWidth: WORLD_WIDTH, worldHeight: WORLD_HEIGHT });
+
+  constructor(options: ViewportOptions, appTicker: Ticker) {
+    super({ ...options, worldWidth: WORLD_WIDTH, worldHeight: WORLD_HEIGHT });
     this._players = {};
     this._playersIterable = [];
     this.appTicker = appTicker;
-    
+
     this.initializeWorld();
   }
 
@@ -74,7 +75,11 @@ class GameWorld extends Viewport {
     });
 
     this.on("mousedown", (e: interaction.InteractionEvent) => {
-      this.user.playerController.shoot();
+      this.user.playerController.mouseDown = true;
+    })
+
+    this.on("mouseup", (e: interaction.InteractionEvent) => {
+      this.user.playerController.mouseDown = false;
     })
   }
 
@@ -96,6 +101,10 @@ class GameWorld extends Viewport {
 
   getPlayer = (playerId: string) => {
     return this._players[playerId];
+  }
+
+  addToTicker = (f: (d: number) => void) => {
+    this.appTicker.add((d) => f(d));
   }
 
 }

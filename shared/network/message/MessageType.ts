@@ -4,11 +4,12 @@ enum MessageType {
   PlayerConnectionReply,
   PlayerJoined,
   PlayerLeft,
+  ProjectileSpawned,
   InputStatusUpdate,
   WorldStatusUpdate,
 }
 
-export interface ClientMessage extends NetworkMessage  {
+export interface ClientMessage extends NetworkMessage {
   playerId: null | string;
 }
 

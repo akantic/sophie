@@ -1,10 +1,10 @@
-import { Bodies, World } from "matter-js";
+import { Body, Bodies, World, Vector } from "matter-js";
 import Game from "./Game";
 import Player from "../models/Player";
 
 class GameWorld {
-  
-  private readonly _players: { [key: string]: Player };  
+
+  private readonly _players: { [key: string]: Player };
 
   private _playersIterable: Player[];
 
@@ -24,13 +24,12 @@ class GameWorld {
     // World.add(Game.world, [topWall, leftWall, rightWall, bottomWall]);
   }
 
-  addPlayer = (player: Player) => {
-    const body = Bodies.circle(0, 0, 20);
-    body.friction = 0;
-    body.frictionStatic = 0;
-    body.frictionAir = 0.5;
+  addBody = (body: Body) => {
     Game.world.bodies.push(body);
-    player.body = body;
+  }
+
+  addPlayer = (player: Player) => {
+    this.addBody(player.body);
     this._players[player.id] = player;
     this._playersIterable = Object.values(this._players);
   }

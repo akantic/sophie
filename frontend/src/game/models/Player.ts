@@ -1,7 +1,7 @@
 import { Sprite, Texture, IPoint, Point } from "pixi.js";
 import circle from "../sprites/circle.png";
 
-export default class Player extends Sprite {
+class Player extends Sprite {
 
   private readonly weapon: Sprite;
 
@@ -24,6 +24,7 @@ export default class Player extends Sprite {
     this.weapon.position.y = 150;
     this.addChild(this.weapon);
   }
-
 }
+
+export default Player;
 

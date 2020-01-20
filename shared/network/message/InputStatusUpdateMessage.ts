@@ -10,15 +10,16 @@ class InputStatusUpdateMessage extends NetworkMessage implements ClientMessage {
   readonly payload: {
     direction: Vector,
     rotation: number,
+    mouseDown: boolean,
   };
 
-  private constructor(direction: Vector, rotation: number) {
+  private constructor(direction: Vector, rotation: number, mouseDown: boolean) {
     super(MessageType.InputStatusUpdate);
-    this.payload = { direction, rotation };
+    this.payload = { direction, rotation, mouseDown };
   }
 
-  static create(direction: Vector, rotation: number) {
-    return new InputStatusUpdateMessage(direction, rotation);
+  static create(direction: Vector, rotation: number, mouseDown: boolean) {
+    return new InputStatusUpdateMessage(direction, rotation, mouseDown);
   }
 
   encode = () => {
