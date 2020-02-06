@@ -1,10 +1,9 @@
+import { InputStatusUpdateMessage } from "@sophie/shared";
+
 import Player from "../../models/Player";
 import { networkClient } from "../../network/NetworkClient";
-import { InputStatusUpdateMessage } from "@sophie/shared";
-// import { PLAYER_SPEED } from "../../consts";
 
 class PlayerController {
-
   private readonly player: Player;
 
   private readonly keyState: { [key: string]: boolean };
@@ -15,7 +14,9 @@ class PlayerController {
     this.player = player;
     this.keyState = {};
     this.mouseDown = false;
+    // eslint-disable-next-line no-param-reassign
     document.onkeydown = this.keyDown.bind(this);
+    // eslint-disable-next-line no-param-reassign
     document.onkeyup = this.keyUp.bind(this);
   }
 
@@ -31,7 +32,7 @@ class PlayerController {
     this.mouseDown = true;
   }
 
-  movement(delta: number) {
+  movement() {
     const direction = { x: 0, y: 0 };
 
     if (this.keyState.w) {
@@ -51,7 +52,13 @@ class PlayerController {
       direction.x += 1;
     }
 
-    networkClient.send(InputStatusUpdateMessage.create(direction, this.player.rotation, this.mouseDown));
+    networkClient.send(
+      InputStatusUpdateMessage.create(
+        direction,
+        this.player.rotation,
+        this.mouseDown
+      )
+    );
   }
 }
 

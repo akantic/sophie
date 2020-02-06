@@ -4,11 +4,11 @@ import circle from "../sprites/circle.png";
 import GameObject from "./GameObject";
 
 class Projectile extends GameObject {
-
-  constructor(spriteId: string) {
+  constructor() {
     super(Texture.from(circle));
     this.tint = 0xffff00;
-    this.width = this.height = 10;
+    this.width = 50;
+    this.height = 10;
     this.anchor.set(0.5);
   }
 }

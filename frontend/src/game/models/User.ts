@@ -1,8 +1,7 @@
 import Player from "./Player";
-import PlayerController from "../mechanics/player/PlayerController"
+import PlayerController from "../mechanics/player/PlayerController";
 
 class User extends Player {
-
   private _playerController: PlayerController;
 
   get playerController(): PlayerController {
@@ -11,9 +10,9 @@ class User extends Player {
 
   constructor(id: string) {
     super(id);
-    this.tint = 0x00ff00
+    this.tint = 0x00ff00;
     this._playerController = new PlayerController(document, this);
   }
-} 
+}
 
 export default User;

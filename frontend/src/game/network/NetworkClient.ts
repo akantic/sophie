@@ -1,4 +1,9 @@
-import { NetworkMessage, MessageType, MessageDecoder, ClientMessage } from "@sophie/shared";
+import {
+  NetworkMessage,
+  MessageType,
+  MessageDecoder,
+  ClientMessage
+} from "@sophie/shared";
 import worldStatusUpdateHandler from "./message/handlers/worldStatusUpdateHandler";
 import playerConnectionReplyHandler from "./message/handlers/playerConnectionReplyHandler";
 import playerJoinedHandler from "./message/handlers/playerJoinedHandler";
@@ -7,7 +12,6 @@ import projectileSpawnedHandler from "./message/handlers/projectileSpawnedHandle
 import GameWorld from "../models/GameWorld";
 
 class NetworkClient {
-
   private readonly socket: WebSocket;
 
   constructor() {
@@ -18,26 +22,25 @@ class NetworkClient {
       [MessageType.PlayerJoined]: playerJoinedHandler,
       [MessageType.PlayerLeft]: playerLeftHandler,
       [MessageType.PlayerConnectionReply]: playerConnectionReplyHandler,
-      [MessageType.ProjectileSpawned]: projectileSpawnedHandler,
-    }
+      [MessageType.ProjectileSpawned]: projectileSpawnedHandler
+    };
 
     const messageDecoder = new MessageDecoder(handlers);
 
-    this.socket.onopen = function (event) {
+    this.socket.onopen = () => {
       console.log("Connected!");
-    }
+    };
 
     this.socket.onmessage = messageDecoder.processMessage;
   }
 
   send = (message: NetworkMessage) => {
-    (message as ClientMessage).playerId = GameWorld.get().user.id;;
+    (message as ClientMessage).playerId = GameWorld.get().user.id;
 
     if (this.socket.readyState === WebSocket.OPEN) {
       this.socket.send(message.encode());
     }
-  }
+  };
 }
-
 
 export const networkClient = new NetworkClient();
