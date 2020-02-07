@@ -7,18 +7,18 @@ import NetworkServer from "./network/NetworkServer";
 import game from "./core/Game";
 
 const wss = new WebSocket.Server({
-  port: 8080,
+  port: 8080
 });
 
-// Create a message decoder with specified handlers 
+// Create a message decoder with specified handlers
 const handlers = {
   [MessageType.InputStatusUpdate]: inputStatusUpdateHandler
-}
+};
 const messageDecoder = new MessageDecoder(handlers);
 // Assign intialized decoder as a server connection handler
-wss.on("connection", (ws) => connectionHandler(ws as any, messageDecoder));
+wss.on("connection", ws => connectionHandler(ws as any, messageDecoder));
 
-// Initialize network server 
+// Initialize network server
 NetworkServer.create(wss);
 
 game.start();

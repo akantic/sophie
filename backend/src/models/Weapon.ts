@@ -7,7 +7,6 @@ import Player from "./Player";
 import Projectile from "./Projectile";
 
 class Weapon {
-
   readonly id: string;
 
   readonly spriteId: string;
@@ -23,22 +22,30 @@ class Weapon {
 
   readonly projectileSpeed: number;
 
-  constructor(id: string, spriteId: string, fireRate: number, damage: number, projectileSpeed: number) {
+  constructor(
+    id: string,
+    spriteId: string,
+    fireRate: number,
+    damage: number,
+    projectileSpeed: number
+  ) {
     this.id = id;
     this.spriteId = spriteId;
     this.fireRate = fireRate; // shots per minute
-    this.fireInterval = fireRate / 60 * 1000; // in milliseconds
+    this.fireInterval = (fireRate / 60) * 1000; // in milliseconds
     this.damage = damage;
     this.projectileSpeed = projectileSpeed;
   }
 
   fire = (player: Player) => {
     const timeNow = Date.now();
-    if ((timeNow - this.lastFired) < this.fireInterval) {
+    if (timeNow - this.lastFired < this.fireInterval) {
       return null;
     }
 
-    const { body: { position: pPosition, angle: pAngle } } = player;
+    const {
+      body: { position: pPosition, angle: pAngle }
+    } = player;
 
     const body = Bodies.circle(pPosition.x, pPosition.y, 1);
     body.friction = 0;
@@ -51,9 +58,16 @@ class Weapon {
     Body.setVelocity(body, Vector.mult(direction, this.projectileSpeed));
 
     this.lastFired = Date.now();
-    NetworkServer.get().broadcast(ProjectileSpawnedMessage.create(player.body.position, player.body.angle, "id", this.projectileSpeed))
-    return new Projectile(player, body, this.damage)
-  }
+    NetworkServer.get().broadcast(
+      ProjectileSpawnedMessage.create(
+        player.body.position,
+        player.body.angle,
+        "id",
+        this.projectileSpeed
+      )
+    );
+    return new Projectile(player, body, this.damage);
+  };
 }
 
 export default Weapon;

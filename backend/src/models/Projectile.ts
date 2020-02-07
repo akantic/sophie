@@ -3,7 +3,6 @@ import { Body } from "matter-js";
 import Player from "./Player";
 
 class Projectile {
-
   readonly body: Body;
 
   readonly player: Player;
@@ -18,4 +17,3 @@ class Projectile {
 }
 
 export default Projectile;
-

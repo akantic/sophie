@@ -1,21 +1,19 @@
 {
   "compilerOptions": {
+    "outDir": "./dist",
+    "target": "es6",
+    "allowJs": false,
+    "checkJs": false,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
     "module": "commonjs",
-    "esModuleInterop": true,
-    "target": "ESNext",
     "noImplicitAny": false,
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "noEmit": false,
     "sourceMap": true,
-    "outDir": "dist",
-    "baseUrl": ".",
-    "paths": {
-      "*": [
-        "node_modules/*"
-      ]
-    }
+    "baseUrl": "."
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src"]
 }

@@ -1,9 +1,8 @@
-import { Body, Bodies, World, Vector } from "matter-js";
+import { Body } from "matter-js";
 import Game from "./Game";
 import Player from "../models/Player";
 
 class GameWorld {
-
   private readonly _players: { [key: string]: Player };
 
   private _playersIterable: Player[];
@@ -26,22 +25,22 @@ class GameWorld {
 
   addBody = (body: Body) => {
     Game.world.bodies.push(body);
-  }
+  };
 
   addPlayer = (player: Player) => {
     this.addBody(player.body);
     this._players[player.id] = player;
     this._playersIterable = Object.values(this._players);
-  }
+  };
 
   removePlayer = (playerId: string) => {
     delete this._players[playerId];
     this._playersIterable = Object.values(this._players);
-  }
+  };
 
   getPlayer = (playerId: string) => {
     return this._players[playerId];
-  }
+  };
 }
 
 export default new GameWorld();
