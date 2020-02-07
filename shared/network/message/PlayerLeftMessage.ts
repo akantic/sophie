@@ -1,10 +1,9 @@
-import MessageType from "../message/MessageType";
-import NetworkMessage from "../message/NetworkMessage";
+import MessageType from "./MessageType";
+import NetworkMessage from "./NetworkMessage";
 
 class PlayerLeftMessage extends NetworkMessage {
-    
   readonly payload: {
-    playerId: string,
+    playerId: string;
   };
 
   private constructor(playerId: string) {
@@ -18,6 +17,6 @@ class PlayerLeftMessage extends NetworkMessage {
 
   encode = () => {
     return JSON.stringify(this);
-  }
+  };
 }
 export default PlayerLeftMessage;

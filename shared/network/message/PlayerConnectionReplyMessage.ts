@@ -1,16 +1,14 @@
-import MessageType, { ClientMessage } from "../message/MessageType";
-import NetworkMessage from "../message/NetworkMessage";
+import MessageType from "./MessageType";
+import NetworkMessage from "./NetworkMessage";
 
 type WorldStatus = {
-  players: 
-    { id: string }[]
-}
+  players: { id: string }[];
+};
 
 class PlayerConnectionReplyMessage extends NetworkMessage {
-
   readonly payload: {
-    playerId: string,
-    worldStatus: WorldStatus,
+    playerId: string;
+    worldStatus: WorldStatus;
   };
 
   private constructor(playerId: string, worldStatus: WorldStatus) {
@@ -24,7 +22,7 @@ class PlayerConnectionReplyMessage extends NetworkMessage {
 
   encode = () => {
     return JSON.stringify(this);
-  }
+  };
 }
 
 export default PlayerConnectionReplyMessage;

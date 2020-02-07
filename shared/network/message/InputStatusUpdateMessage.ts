@@ -1,16 +1,15 @@
 import { Vector } from "matter-js";
 
-import MessageType, { ClientMessage } from "../message/MessageType";
-import NetworkMessage from "../message/NetworkMessage";
+import MessageType, { ClientMessage } from "./MessageType";
+import NetworkMessage from "./NetworkMessage";
 
 class InputStatusUpdateMessage extends NetworkMessage implements ClientMessage {
-
   playerId = null;
 
   readonly payload: {
-    direction: Vector,
-    rotation: number,
-    mouseDown: boolean,
+    direction: Vector;
+    rotation: number;
+    mouseDown: boolean;
   };
 
   private constructor(direction: Vector, rotation: number, mouseDown: boolean) {
@@ -24,7 +23,7 @@ class InputStatusUpdateMessage extends NetworkMessage implements ClientMessage {
 
   encode = () => {
     return JSON.stringify(this);
-  }
+  };
 }
 
 export default InputStatusUpdateMessage;

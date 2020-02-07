@@ -1,17 +1,29 @@
 {
-  "name": "@sophie/shared",
+  "name": "sophie-shared",
   "version": "0.0.1",
   "main": "dist/index.js",
+  "repository": "git@github.com:bkantura/sophie.git",
+  "author": "Bruno Kantura <bruno.kantura@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf dist/ && tsc",
     "prestart": "yarn build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "tsc -w",
+    "lint": "eslint . --ext .ts"
   },
   "dependencies": {},
   "devDependencies": {
-    "@types/matter-js": "^0.10.6",
-    "tslint": "^5.20.1",
+    "@types/matter-js": "^0.10.9",
+    "@types/node": "^12.12.14",
+    "@typescript-eslint/eslint-plugin": "^2.19.0",
+    "@typescript-eslint/parser": "^2.19.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "matter-js": "^0.14.2",
+    "prettier": "^1.19.1",
     "typescript": "^3.7.3"
   }
 }

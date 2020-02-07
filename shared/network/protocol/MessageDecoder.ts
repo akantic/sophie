@@ -3,10 +3,9 @@ import MessageType from "../message/MessageType";
 
 type MessageHandlers = {
   [key in MessageType]?: (message: NetworkMessage) => void;
-}
+};
 
 class MessageDecoder {
-
   private readonly handlers: MessageHandlers;
 
   constructor(handlers: MessageHandlers) {
@@ -16,12 +15,12 @@ class MessageDecoder {
   stringMessageHandler = (e: MessageEvent) => {
     const message = JSON.parse(e.data) as NetworkMessage;
     this.handlers[message.type](message);
-  }
+  };
 
-  binaryMessageHandler = (_e: MessageEvent): any => {
+  binaryMessageHandler = (): any => {
     // TODO?
     return null;
-  }
+  };
 
   processMessage = (e: MessageEvent) => {
     if (e.data instanceof ArrayBuffer) {
@@ -29,7 +28,7 @@ class MessageDecoder {
     } else if (typeof e.data === "string") {
       this.stringMessageHandler(e);
     }
-  }
+  };
 }
 
 export default MessageDecoder;

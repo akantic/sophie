@@ -2,12 +2,13 @@
   "name": "sophie-frontend",
   "version": "0.1.0",
   "main": "src/index.tsx",
-  "author": "Bruno Kantura",
+  "repository": "git@github.com:bkantura/sophie.git",
+  "author": "Bruno Kantura <bruno.kantura@gmail.com>",
   "license": "MIT",
   "scripts": {
     "build": "webpack",
     "start": "webpack-dev-server",
-    "lint": "yarn eslint . --ext .ts,.tsx"
+    "lint": "eslint . --ext .ts,.tsx"
   },
   "dependencies": {
     "pixi-viewport": "^4.8.0",
