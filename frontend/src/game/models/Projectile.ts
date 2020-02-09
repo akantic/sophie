@@ -7,7 +7,7 @@ class Projectile extends GameObject {
   constructor() {
     super(Texture.from(circle));
     this.tint = 0xffff00;
-    this.width = 50;
+    this.width = 10;
     this.height = 10;
     this.anchor.set(0.5);
   }

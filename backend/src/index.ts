@@ -5,6 +5,7 @@ import { connectionHandler } from "./network";
 import inputStatusUpdateHandler from "./network/message/handlers/inputStatusUpdateHandler";
 import NetworkServer from "./network/NetworkServer";
 import game from "./core/Game";
+import engineRenderer from "./debug/EngineRenderer";
 
 const wss = new WebSocket.Server({
   port: 8080
@@ -22,3 +23,5 @@ wss.on("connection", ws => connectionHandler(ws as any, messageDecoder));
 NetworkServer.create(wss);
 
 game.start();
+
+engineRenderer.run(game.engine, 100);

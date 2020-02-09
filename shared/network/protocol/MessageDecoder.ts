@@ -24,7 +24,7 @@ class MessageDecoder {
 
   processMessage = (e: MessageEvent) => {
     if (e.data instanceof ArrayBuffer) {
-      this.binaryMessageHandler(e);
+      this.binaryMessageHandler();
     } else if (typeof e.data === "string") {
       this.stringMessageHandler(e);
     }

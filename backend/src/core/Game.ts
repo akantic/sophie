@@ -16,6 +16,10 @@ class Game {
     return this._engine.world;
   }
 
+  get engine(): Engine {
+    return this._engine;
+  }
+
   private _gameIntervalId: NodeJS.Timeout;
 
   private _networkIntervalId: NodeJS.Timeout;

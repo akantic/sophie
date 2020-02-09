@@ -1,6 +1,6 @@
-const webpack = require('webpack');
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require("webpack");
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   mode: "development",
@@ -8,10 +8,13 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".js", ".tsx"]
   },
-  entry: './src/index.tsx',
+  entry: {
+    index: ["./src/index.tsx", "webpack/hot/only-dev-server"],
+    debug: ["./src/debug/index.tsx", "webpack/hot/only-dev-server"]
+  },
   output: {
-    filename: 'app.bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    filename: "[name].js",
+    path: path.resolve(__dirname, "dist")
   },
   module: {
     rules: [
@@ -27,16 +30,16 @@ module.exports = {
       },
       {
         test: /\.html/,
-        use: ['html-loader']
+        use: ["html-loader"]
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
         loader: "file-loader",
         options: {
-          name: 'images/[name].[ext]'
+          name: "images/[name].[ext]"
         }
       }
-    ],
+    ]
   },
   devServer: {
     contentBase: "./dist",
@@ -45,7 +48,14 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'public', 'index.html')
+      filename: "index.html",
+      chunks: ["index"],
+      template: path.resolve(__dirname, "public", "index.html")
+    }),
+    new HtmlWebpackPlugin({
+      filename: "debug.html",
+      chunks: ["debug"],
+      template: path.resolve(__dirname, "public", "debug.html")
     })
   ]
 };
