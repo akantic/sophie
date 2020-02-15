@@ -1,10 +1,9 @@
 import * as WebSocket from "ws";
 import { MessageDecoder, MessageType } from "@sophie/shared";
-
 import { connectionHandler } from "./network";
 import inputStatusUpdateHandler from "./network/message/handlers/inputStatusUpdateHandler";
 import NetworkServer from "./network/NetworkServer";
-import game from "./core/Game";
+import Game from "./core/Game";
 import engineRenderer from "./debug/EngineRenderer";
 
 const wss = new WebSocket.Server({
@@ -22,6 +21,6 @@ wss.on("connection", ws => connectionHandler(ws as any, messageDecoder));
 // Initialize network server
 NetworkServer.create(wss);
 
-game.start();
+Game.get().start();
 
-engineRenderer.run(game.engine, 100);
+engineRenderer.run(Game.get().engine, 100);

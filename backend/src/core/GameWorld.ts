@@ -24,7 +24,7 @@ class GameWorld {
   }
 
   addBody = (body: Body) => {
-    Game.world.bodies.push(body);
+    Game.get().world.bodies.push(body);
   };
 
   addPlayer = (player: Player) => {

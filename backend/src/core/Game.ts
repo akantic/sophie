@@ -1,4 +1,4 @@
-import { Engine, World } from "matter-js";
+import Matter, { Engine, World, IPair, IEventCollision } from "matter-js";
 import { WorldStatusUpdateMessage } from "@sophie/shared";
 
 import { GAME_UPDATE_RATE, NETWORK_UPDATE_RATE } from "../consts";
@@ -6,6 +6,15 @@ import GameWorld from "./GameWorld";
 import NetworkServer from "../network/NetworkServer";
 
 class Game {
+  static instance: Game;
+
+  static get = (): Game => {
+    if (!Game.instance) {
+      Game.instance = new Game();
+    }
+    return Game.instance;
+  };
+
   private static readonly DELTA = 1000 / GAME_UPDATE_RATE;
 
   private static readonly NETWORK_DELTA = 1000 / NETWORK_UPDATE_RATE;
@@ -24,9 +33,20 @@ class Game {
 
   private _networkIntervalId: NodeJS.Timeout;
 
-  constructor() {
+  private constructor() {
     this._engine = Engine.create();
     this._engine.world.gravity.y = 0;
+
+    Matter.Events.on(
+      this._engine,
+      "collisionStart",
+      (event: IEventCollision<Engine>) => {
+        event.pairs.forEach((pair: IPair) => {
+          Matter.Events.trigger(pair.bodyA, "collisionStart", pair as any);
+          Matter.Events.trigger(pair.bodyB, "collisionStart", pair as any);
+        });
+      }
+    );
   }
 
   private update = () => {
@@ -60,4 +80,4 @@ class Game {
   };
 }
 
-export default new Game();
+export default Game;
