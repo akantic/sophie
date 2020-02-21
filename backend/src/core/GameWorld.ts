@@ -1,6 +1,7 @@
-import { Body } from "matter-js";
+import Matter, { Body } from "matter-js";
 import Game from "./Game";
 import Player from "../models/Player";
+import GameObject from "../models/GameObject";
 
 class GameWorld {
   private readonly _players: { [key: string]: Player };
@@ -34,12 +35,17 @@ class GameWorld {
   };
 
   removePlayer = (playerId: string) => {
+    this.destroy(this._players[playerId]);
     delete this._players[playerId];
     this._playersIterable = Object.values(this._players);
   };
 
   getPlayer = (playerId: string) => {
     return this._players[playerId];
+  };
+
+  destroy = (gameObject: GameObject) => {
+    Matter.Composite.remove(Game.get().world, gameObject.body);
   };
 }
 

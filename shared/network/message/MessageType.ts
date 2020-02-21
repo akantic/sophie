@@ -6,7 +6,8 @@ enum MessageType {
   PlayerLeft,
   ProjectileSpawned,
   InputStatusUpdate,
-  WorldStatusUpdate
+  WorldStatusUpdate,
+  GameObjectDestroyedMessage
 }
 
 export interface ClientMessage extends NetworkMessage {

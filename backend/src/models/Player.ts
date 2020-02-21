@@ -1,23 +1,21 @@
 import { Body, Bodies, Vector } from "matter-js";
+import { Label } from "@sophie/shared";
 
 import Weapons from "../resources/Weapons.json";
 
 import Weapon from "./Weapon";
-import { PLAYER_MOVEMENT_SPEED } from "../consts";
+import { PLAYER_MOVEMENT_SPEED, PLAYER_BODY_RADIUS } from "../consts";
+import GameObject from "./GameObject";
 
-class Player {
-  id: string;
-
-  body: Body;
-
+class Player extends GameObject {
   socket: WebSocket;
 
   weapon: Weapon;
 
   private constructor(socket: WebSocket) {
-    this.id = Math.round(Math.random() * 36 ** 12).toString(36);
+    super(Label.Player);
     this.socket = socket;
-    this.body = Bodies.circle(0, 0, 20);
+    this.body = Bodies.circle(0, 0, PLAYER_BODY_RADIUS);
     this.body.friction = 0;
     this.body.frictionStatic = 0;
     this.body.frictionAir = 0.5;
@@ -27,7 +25,8 @@ class Player {
       w.spriteId,
       w.fireRate,
       w.damage,
-      w.projectileSpeed
+      w.projectileSpeed,
+      w.projectileBodyRadius
     );
   }
 

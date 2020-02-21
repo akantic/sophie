@@ -12,6 +12,10 @@ import GameObject from "./GameObject";
 class GameWorld extends Viewport {
   private static instance: GameWorld;
 
+  gameObjects: { [key: string]: GameObject };
+
+  gameObjectsIterable: GameObject[];
+
   players: { [key: string]: Player };
 
   playersIterable: Player[];
@@ -38,6 +42,7 @@ class GameWorld extends Viewport {
     this.renderTicker = renderTicker;
     this.players = {};
     this.playersIterable = [];
+    this.gameObjects = {};
   }
 
   initializeEngine(engineConfig: EngineConfig) {
@@ -51,6 +56,12 @@ class GameWorld extends Viewport {
 
   initializeWorld() {
     this.addChild(new Sprite(Texture.from(background)));
+    const dt = 1 - 0.01 ** (1 / this.engineConfig.updateRate);
+    this.renderTicker.add(() => {
+      this.gameObjectsIterable.forEach(go => {
+        go.position = lerp(go.position, go.actualPosition, dt);
+      });
+    });
   }
 
   initializeUser(id: string) {
@@ -96,9 +107,9 @@ class GameWorld extends Viewport {
   };
 
   removePlayer = (playerId: string) => {
-    this.removeChild(this.players[playerId]);
     delete this.players[playerId];
     this.playersIterable = Object.values(this.players);
+    this.destroyGameObject(playerId);
   };
 
   getPlayer = (playerId: string) => {
@@ -106,11 +117,16 @@ class GameWorld extends Viewport {
   };
 
   addGameObject = (go: GameObject) => {
-    const dt = 1 - 0.01 ** (1 / this.engineConfig.updateRate);
-    this.renderTicker.add(() => {
-      go.position = lerp(go.position, go.actualPosition, dt);
-    });
+    this.gameObjects[go.id] = go;
+    this.gameObjectsIterable = Object.values(this.gameObjects);
     this.addChild(go);
+  };
+
+  destroyGameObject = (id: string) => {
+    const gameObject = this.gameObjects[id];
+    this.removeChild(gameObject);
+    delete this.gameObjects[id];
+    this.gameObjectsIterable = Object.values(this.gameObjects);
   };
 }
 

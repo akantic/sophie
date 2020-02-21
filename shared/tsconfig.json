@@ -15,5 +15,5 @@
     "sourceMap": true,
     "baseUrl": "."
   },
-  "include": ["index.ts", "network"]
+  "include": ["index.ts", "network", "game"]
 }

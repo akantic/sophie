@@ -2,9 +2,10 @@
   {
     "id": "1",
     "spriteId": "default_weapon.png",
-    "fireRate": 60,
+    "fireRate": 20,
     "damage": 1,
     "projectileSpriteId": "default_weapon_p.png",
-    "projectileSpeed": 10
+    "projectileSpeed": 10,
+    "projectileBodyRadius": 2
   }
 ]

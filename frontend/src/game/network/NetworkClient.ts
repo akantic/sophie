@@ -9,6 +9,7 @@ import playerConnectionReplyHandler from "./message/handlers/playerConnectionRep
 import playerJoinedHandler from "./message/handlers/playerJoinedHandler";
 import playerLeftHandler from "./message/handlers/playerLeftHandler";
 import projectileSpawnedHandler from "./message/handlers/projectileSpawnedHandler";
+import gameObjectDestroyedHandler from "./message/handlers/gameObjectDestroyedHandler";
 import GameWorld from "../models/GameWorld";
 
 class NetworkClient {
@@ -22,7 +23,8 @@ class NetworkClient {
       [MessageType.PlayerJoined]: playerJoinedHandler,
       [MessageType.PlayerLeft]: playerLeftHandler,
       [MessageType.PlayerConnectionReply]: playerConnectionReplyHandler,
-      [MessageType.ProjectileSpawned]: projectileSpawnedHandler
+      [MessageType.ProjectileSpawned]: projectileSpawnedHandler,
+      [MessageType.GameObjectDestroyedMessage]: gameObjectDestroyedHandler
     };
 
     const messageDecoder = new MessageDecoder(handlers);

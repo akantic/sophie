@@ -5,6 +5,7 @@ import NetworkMessage from "./NetworkMessage";
 
 class ProjectileSpawnedMessage extends NetworkMessage {
   readonly payload: {
+    id: string;
     position: Vector;
     rotation: number;
     spriteId: string;
@@ -12,6 +13,7 @@ class ProjectileSpawnedMessage extends NetworkMessage {
   };
 
   private constructor(
+    id: string,
     position: Vector,
     rotation: number,
     spriteId: string,
@@ -19,6 +21,7 @@ class ProjectileSpawnedMessage extends NetworkMessage {
   ) {
     super(MessageType.ProjectileSpawned);
     this.payload = {
+      id,
       position,
       rotation,
       spriteId,
@@ -27,12 +30,19 @@ class ProjectileSpawnedMessage extends NetworkMessage {
   }
 
   static create(
+    id: string,
     position: Vector,
     rotation: number,
     spriteId: string,
     velocity: Vector
   ) {
-    return new ProjectileSpawnedMessage(position, rotation, spriteId, velocity);
+    return new ProjectileSpawnedMessage(
+      id,
+      position,
+      rotation,
+      spriteId,
+      velocity
+    );
   }
 
   encode = () => {

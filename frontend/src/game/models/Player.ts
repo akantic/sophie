@@ -1,4 +1,5 @@
 import { Sprite, Texture } from "pixi.js";
+import { Label } from "@sophie/shared";
 
 import circle from "../sprites/circle.png";
 import GameObject from "./GameObject";
@@ -6,10 +7,8 @@ import GameObject from "./GameObject";
 class Player extends GameObject {
   private readonly weapon: Sprite;
 
-  id: string;
-
   constructor(id: string) {
-    super(Texture.from(circle));
+    super(Texture.from(circle), Label.Player, id);
     this.id = id;
     this.tint = 0xff0000;
     this.width = 50;

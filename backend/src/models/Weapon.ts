@@ -22,12 +22,15 @@ class Weapon {
 
   readonly projectileSpeed: number;
 
+  readonly projectileBodyRadius: number;
+
   constructor(
     id: string,
     spriteId: string,
     fireRate: number,
     damage: number,
-    projectileSpeed: number
+    projectileSpeed: number,
+    projectileBodyRadius: number
   ) {
     this.id = id;
     this.spriteId = spriteId;
@@ -35,6 +38,7 @@ class Weapon {
     this.fireInterval = (fireRate / 60) * 1000; // in milliseconds
     this.damage = damage;
     this.projectileSpeed = projectileSpeed;
+    this.projectileBodyRadius = projectileBodyRadius;
   }
 
   fire = (player: Player) => {
@@ -44,30 +48,41 @@ class Weapon {
     }
 
     const {
-      body: { position: pPosition, angle: pAngle }
+      body: { position: pPosition, angle: pAngle, circleRadius: pRadius }
     } = player;
 
-    const body = Bodies.circle(pPosition.x, pPosition.y, 1);
+    const direction = Vector.create(Math.cos(pAngle), Math.sin(pAngle));
+    const velocity = Vector.mult(direction, this.projectileSpeed);
+
+    const projectilePositionOffset = Vector.create(
+      direction.x * pRadius + direction.x * this.projectileBodyRadius,
+      direction.y * pRadius + direction.y * this.projectileBodyRadius
+    );
+    const body = Bodies.circle(
+      pPosition.x + projectilePositionOffset.x,
+      pPosition.y + projectilePositionOffset.y,
+      this.projectileBodyRadius
+    );
     body.friction = 0;
     body.frictionAir = 0;
     body.frictionStatic = 0;
     Body.setDensity(body, Number.MAX_SAFE_INTEGER);
     GameWorld.addBody(body);
 
-    const direction = Vector.create(Math.cos(pAngle), Math.sin(pAngle));
-    const velocity = Vector.mult(direction, this.projectileSpeed);
     Body.setVelocity(body, velocity);
 
     this.lastFired = Date.now();
+    const projectile = new Projectile(player, body, this.damage);
+
     NetworkServer.get().broadcast(
       ProjectileSpawnedMessage.create(
-        player.body.position,
+        projectile.id,
+        projectile.body.position,
         player.body.angle,
         "id",
         velocity
       )
     );
-    return new Projectile(player, body, this.damage);
   };
 }
 

@@ -12,7 +12,10 @@ export {
 export { default as PlayerJoinedMessage } from "./network/message/PlayerJoinedMessage";
 export { default as PlayerLeftMessage } from "./network/message/PlayerLeftMessage";
 export { default as ProjectileSpawnedMessage } from "./network/message/ProjectileSpawnedMessage";
+export { default as GameObjectDestroyedMessage } from "./network/message/GameObjectDestroyedMessage";
 
 export { default as NetworkMessage } from "./network/message/NetworkMessage";
 export { default as MessageType } from "./network/message/MessageType";
 export { default as MessageDecoder } from "./network/protocol/MessageDecoder";
+
+export { Label } from "./game/labels";
