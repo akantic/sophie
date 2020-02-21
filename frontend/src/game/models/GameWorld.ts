@@ -22,6 +22,8 @@ class GameWorld extends Viewport {
 
   renderTicker: Ticker;
 
+  engineConfig: EngineConfig;
+
   static create = (options: ViewportOptions, renderTicker: Ticker) => {
     GameWorld.instance = new GameWorld(options, renderTicker);
     return GameWorld.instance;
@@ -44,6 +46,7 @@ class GameWorld extends Viewport {
     engineTicker.minFPS = engineConfig.updateRate;
     engineTicker.maxFPS = engineConfig.updateRate;
     this.engineTicker = engineTicker;
+    this.engineConfig = engineConfig;
   }
 
   initializeWorld() {
@@ -103,8 +106,9 @@ class GameWorld extends Viewport {
   };
 
   addGameObject = (go: GameObject) => {
+    const dt = 1 - 0.01 ** (1 / this.engineConfig.updateRate);
     this.renderTicker.add(() => {
-      go.position = lerp(go.position, go.actualPosition, 0.15);
+      go.position = lerp(go.position, go.actualPosition, dt);
     });
     this.addChild(go);
   };
