@@ -1,12 +1,20 @@
-import { Sprite, IPoint } from "pixi.js";
+import { Sprite, Point, IPoint, Texture } from "pixi.js";
 
 import GameWorld from "./GameWorld";
 
 abstract class GameObject extends Sprite {
-  addVelocity = (direction: IPoint, speed: number) => {
-    GameWorld.get().addToTicker(d => {
-      this.position.x += d * direction.x * speed;
-      this.position.y += d * direction.y * speed;
+  actualPosition: IPoint;
+
+  constructor(texture: Texture) {
+    super(texture);
+    this.actualPosition = new Point();
+    this.actualPosition.copyFrom(this.position);
+  }
+
+  addStaticVelocity = (velocity: IPoint) => {
+    GameWorld.get().engineTicker.add(() => {
+      this.actualPosition.x += velocity.x;
+      this.actualPosition.y += velocity.y;
     });
   };
 }

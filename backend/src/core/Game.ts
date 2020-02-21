@@ -1,5 +1,9 @@
 import Matter, { Engine, World, IPair, IEventCollision } from "matter-js";
-import { WorldStatusUpdateMessage } from "@sophie/shared";
+import {
+  WorldStatusUpdateMessage,
+  EngineConfig,
+  WorldStatus
+} from "@sophie/shared";
 
 import { GAME_UPDATE_RATE, NETWORK_UPDATE_RATE } from "../consts";
 import GameWorld from "./GameWorld";
@@ -27,6 +31,21 @@ class Game {
 
   get engine(): Engine {
     return this._engine;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  get worldStatus(): WorldStatus {
+    return {
+      players: GameWorld.playersI.map(p => ({ id: p.id }))
+    };
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  get engineConfig(): EngineConfig {
+    return {
+      updateRate: GAME_UPDATE_RATE,
+      networkUpdateRate: NETWORK_UPDATE_RATE
+    };
   }
 
   private _gameIntervalId: NodeJS.Timeout;

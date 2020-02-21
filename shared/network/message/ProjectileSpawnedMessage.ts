@@ -8,21 +8,21 @@ class ProjectileSpawnedMessage extends NetworkMessage {
     position: Vector;
     rotation: number;
     spriteId: string;
-    speed: number;
+    velocity: Vector;
   };
 
   private constructor(
     position: Vector,
     rotation: number,
     spriteId: string,
-    speed: number
+    velocity: Vector
   ) {
     super(MessageType.ProjectileSpawned);
     this.payload = {
       position,
       rotation,
       spriteId,
-      speed
+      velocity
     };
   }
 
@@ -30,9 +30,9 @@ class ProjectileSpawnedMessage extends NetworkMessage {
     position: Vector,
     rotation: number,
     spriteId: string,
-    speed: number
+    velocity: Vector
   ) {
-    return new ProjectileSpawnedMessage(position, rotation, spriteId, speed);
+    return new ProjectileSpawnedMessage(position, rotation, spriteId, velocity);
   }
 
   encode = () => {

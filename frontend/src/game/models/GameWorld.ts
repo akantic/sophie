@@ -1,11 +1,13 @@
 import { Sprite, Texture, interaction, Ticker } from "pixi.js";
 import { Viewport, ViewportOptions } from "pixi-viewport";
+import { EngineConfig } from "@sophie/shared";
 
 import Player from "./Player";
 import User from "./User";
 import { WORLD_WIDTH, WORLD_HEIGHT } from "../consts";
 import { lerp } from "../utils";
 import background from "../sprites/grass_background_1.jpg";
+import GameObject from "./GameObject";
 
 class GameWorld extends Viewport {
   private static instance: GameWorld;
@@ -16,10 +18,12 @@ class GameWorld extends Viewport {
 
   user: User;
 
-  private readonly appTicker: Ticker;
+  engineTicker: Ticker;
 
-  static create = (options: ViewportOptions, appTicker: Ticker) => {
-    GameWorld.instance = new GameWorld(options, appTicker);
+  renderTicker: Ticker;
+
+  static create = (options: ViewportOptions, renderTicker: Ticker) => {
+    GameWorld.instance = new GameWorld(options, renderTicker);
     return GameWorld.instance;
   };
 
@@ -27,22 +31,23 @@ class GameWorld extends Viewport {
     return GameWorld.instance;
   };
 
-  constructor(options: ViewportOptions, appTicker: Ticker) {
+  private constructor(options: ViewportOptions, renderTicker: Ticker) {
     super({ ...options, worldWidth: WORLD_WIDTH, worldHeight: WORLD_HEIGHT });
+    this.renderTicker = renderTicker;
     this.players = {};
     this.playersIterable = [];
-    this.appTicker = appTicker;
+  }
 
-    this.initializeWorld();
+  initializeEngine(engineConfig: EngineConfig) {
+    const engineTicker = new Ticker();
+    engineTicker.autoStart = true;
+    engineTicker.minFPS = engineConfig.updateRate;
+    engineTicker.maxFPS = engineConfig.updateRate;
+    this.engineTicker = engineTicker;
   }
 
   initializeWorld() {
     this.addChild(new Sprite(Texture.from(background)));
-    this.appTicker.add(() => {
-      this.playersIterable.forEach(p => {
-        p.position = lerp(p.position, p.actualPosition, 0.15);
-      });
-    });
   }
 
   initializeUser(id: string) {
@@ -50,7 +55,7 @@ class GameWorld extends Viewport {
     this.addPlayer(this.user);
     this.addChild(this.user);
     this.initializeInteractivity();
-    this.appTicker.add(() => {
+    this.engineTicker.add(() => {
       this.user.playerController.movement();
     });
     this.follow(this.user).bounce({
@@ -84,7 +89,7 @@ class GameWorld extends Viewport {
   addPlayer = (player: Player) => {
     this.players[player.id] = player;
     this.playersIterable = Object.values(this.players);
-    this.addChild(player);
+    this.addGameObject(player);
   };
 
   removePlayer = (playerId: string) => {
@@ -97,8 +102,11 @@ class GameWorld extends Viewport {
     return this.players[playerId];
   };
 
-  addToTicker = (f: (d: number) => void) => {
-    this.appTicker.add(d => f(d));
+  addGameObject = (go: GameObject) => {
+    this.renderTicker.add(() => {
+      go.position = lerp(go.position, go.actualPosition, 0.15);
+    });
+    this.addChild(go);
   };
 }
 

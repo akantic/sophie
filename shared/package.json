@@ -1,5 +1,5 @@
 {
-  "name": "sophie-shared",
+  "name": "@sophie/shared",
   "version": "0.0.1",
   "main": "dist/index.js",
   "repository": "git@github.com:bkantura/sophie.git",

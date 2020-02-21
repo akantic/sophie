@@ -6,6 +6,7 @@ import {
 } from "@sophie/shared";
 
 import gameWorld from "../core/GameWorld";
+import Game from "../core/Game";
 import Player from "../models/Player";
 import NetworkServer from "./NetworkServer";
 
@@ -22,9 +23,12 @@ export function connectionHandler(
   };
   gameWorld.addPlayer(player);
   console.log(`Added player ${player.id}`);
-  const players = gameWorld.playersI.map(p => ({ id: p.id }));
   NetworkServer.get().send(
-    PlayerConnectionReplyMessage.create(player.id, { players }),
+    PlayerConnectionReplyMessage.create(
+      player.id,
+      Game.get().engineConfig,
+      Game.get().worldStatus
+    ),
     player
   );
   NetworkServer.get().broadcast(PlayerJoinedMessage.create(player.id));

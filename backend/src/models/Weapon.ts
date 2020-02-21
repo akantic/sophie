@@ -55,7 +55,8 @@ class Weapon {
     GameWorld.addBody(body);
 
     const direction = Vector.create(Math.cos(pAngle), Math.sin(pAngle));
-    Body.setVelocity(body, Vector.mult(direction, this.projectileSpeed));
+    const velocity = Vector.mult(direction, this.projectileSpeed);
+    Body.setVelocity(body, velocity);
 
     this.lastFired = Date.now();
     NetworkServer.get().broadcast(
@@ -63,7 +64,7 @@ class Weapon {
         player.body.position,
         player.body.angle,
         "id",
-        this.projectileSpeed
+        velocity
       )
     );
     return new Projectile(player, body, this.damage);
