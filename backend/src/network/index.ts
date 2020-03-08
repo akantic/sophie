@@ -9,6 +9,7 @@ import gameWorld from "../core/GameWorld";
 import Game from "../core/Game";
 import Player from "../models/Player";
 import NetworkServer from "./NetworkServer";
+import { WORLD_WIDTH, WORLD_HEIGHT } from "../consts";
 
 export function connectionHandler(
   ws: WebSocket,
@@ -27,7 +28,8 @@ export function connectionHandler(
     PlayerConnectionReplyMessage.create(
       player.id,
       Game.get().engineConfig,
-      Game.get().worldStatus
+      Game.get().worldStatus,
+      { width: WORLD_WIDTH, height: WORLD_HEIGHT }
     ),
     player
   );

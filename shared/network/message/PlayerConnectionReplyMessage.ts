@@ -10,31 +10,40 @@ export type EngineConfig = {
   networkUpdateRate: number;
 };
 
+export type WorldSize = {
+  width: number;
+  height: number;
+};
+
 class PlayerConnectionReplyMessage extends NetworkMessage {
   readonly payload: {
     playerId: string;
     engineConfig: EngineConfig;
     worldStatus: WorldStatus;
+    worldSize: WorldSize;
   };
 
   private constructor(
     playerId: string,
     engineConfig: EngineConfig,
-    worldStatus: WorldStatus
+    worldStatus: WorldStatus,
+    worldSize: WorldSize
   ) {
     super(MessageType.PlayerConnectionReply);
-    this.payload = { playerId, engineConfig, worldStatus };
+    this.payload = { playerId, engineConfig, worldStatus, worldSize };
   }
 
   static create(
     playerId: string,
     engineConfig: EngineConfig,
-    worldStatus: WorldStatus
+    worldStatus: WorldStatus,
+    worldSize: WorldSize
   ) {
     return new PlayerConnectionReplyMessage(
       playerId,
       engineConfig,
-      worldStatus
+      worldStatus,
+      worldSize
     );
   }
 

@@ -13,9 +13,20 @@ import gameObjectDestroyedHandler from "./message/handlers/gameObjectDestroyedHa
 import GameWorld from "../models/GameWorld";
 
 class NetworkClient {
+  private static instance: NetworkClient;
+
   private readonly socket: WebSocket;
 
-  constructor() {
+  static create = () => {
+    NetworkClient.instance = new NetworkClient();
+    return NetworkClient.instance;
+  };
+
+  static get = () => {
+    return NetworkClient.instance;
+  };
+
+  private constructor() {
     this.socket = new WebSocket("ws://localhost:8080");
 
     const handlers = {
@@ -45,4 +56,4 @@ class NetworkClient {
   };
 }
 
-export const networkClient = new NetworkClient();
+export default NetworkClient;

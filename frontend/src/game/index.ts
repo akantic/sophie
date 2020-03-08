@@ -1,22 +1,13 @@
 import * as PIXI from "pixi.js";
 
-import GameWorld from "./models/GameWorld";
+import NetworkClient from "./network/NetworkClient";
+import { VIEW_WIDTH, VIEW_HEIGHT } from "./consts";
 
-const app = new PIXI.Application({
-  width: 800,
-  height: 600,
+export const pixiApp = new PIXI.Application({
+  width: VIEW_WIDTH,
+  height: VIEW_HEIGHT,
   backgroundColor: 0x1099bb,
   resolution: window.devicePixelRatio || 1
 });
 
-const gameWorld = GameWorld.create(
-  {
-    screenWidth: app.view.width,
-    screenHeight: app.view.height
-  },
-  app.ticker
-);
-
-app.stage.addChild(gameWorld);
-
-export const canvas = app.view;
+NetworkClient.create();

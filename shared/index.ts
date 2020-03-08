@@ -7,7 +7,8 @@ export { default as WorldStatusUpdateMessage } from "./network/message/WorldStat
 export {
   default as PlayerConnectionReplyMessage,
   WorldStatus,
-  EngineConfig
+  EngineConfig,
+  WorldSize
 } from "./network/message/PlayerConnectionReplyMessage";
 export { default as PlayerJoinedMessage } from "./network/message/PlayerJoinedMessage";
 export { default as PlayerLeftMessage } from "./network/message/PlayerLeftMessage";

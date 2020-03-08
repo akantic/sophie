@@ -1,7 +1,8 @@
 import * as WebSocket from "ws";
 import { Engine, Render } from "matter-js";
-
 import { createCanvas, Canvas } from "canvas";
+
+import { WORLD_WIDTH, WORLD_HEIGHT } from "../consts";
 
 class EngineRenderer {
   private _engine: Engine;
@@ -18,11 +19,15 @@ class EngineRenderer {
       port: 8081
     });
 
-    const canvas = createCanvas(600, 600);
+    const canvas = createCanvas(WORLD_WIDTH, WORLD_HEIGHT);
     (canvas as any).style = {};
     this._canvas = canvas;
 
     this._render = Render.create({
+      options: {
+        width: WORLD_WIDTH,
+        height: WORLD_HEIGHT
+      },
       canvas: canvas as any,
       engine: this._engine
     });

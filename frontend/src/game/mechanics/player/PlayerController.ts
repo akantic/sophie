@@ -1,7 +1,7 @@
 import { InputStatusUpdateMessage } from "@sophie/shared";
 
 import Player from "../../models/Player";
-import { networkClient } from "../../network/NetworkClient";
+import NetworkClient from "../../network/NetworkClient";
 
 class PlayerController {
   private readonly player: Player;
@@ -52,7 +52,7 @@ class PlayerController {
       direction.x += 1;
     }
 
-    networkClient.send(
+    NetworkClient.get().send(
       InputStatusUpdateMessage.create(
         direction,
         this.player.rotation,

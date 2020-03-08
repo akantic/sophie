@@ -1,10 +1,9 @@
-import { Sprite, Texture, interaction, Ticker } from "pixi.js";
+import { TilingSprite, Texture, interaction, Ticker } from "pixi.js";
 import { Viewport, ViewportOptions } from "pixi-viewport";
-import { EngineConfig } from "@sophie/shared";
+import { EngineConfig, WorldSize } from "@sophie/shared";
 
 import Player from "./Player";
 import User from "./User";
-import { WORLD_WIDTH, WORLD_HEIGHT } from "../consts";
 import { lerp } from "../utils";
 import background from "../sprites/grass_background_1.jpg";
 import GameObject from "./GameObject";
@@ -28,8 +27,12 @@ class GameWorld extends Viewport {
 
   engineConfig: EngineConfig;
 
-  static create = (options: ViewportOptions, renderTicker: Ticker) => {
-    GameWorld.instance = new GameWorld(options, renderTicker);
+  static create = (
+    options: ViewportOptions,
+    renderTicker: Ticker,
+    worldSize: WorldSize
+  ) => {
+    GameWorld.instance = new GameWorld(options, renderTicker, worldSize);
     return GameWorld.instance;
   };
 
@@ -37,8 +40,16 @@ class GameWorld extends Viewport {
     return GameWorld.instance;
   };
 
-  private constructor(options: ViewportOptions, renderTicker: Ticker) {
-    super({ ...options, worldWidth: WORLD_WIDTH, worldHeight: WORLD_HEIGHT });
+  private constructor(
+    options: ViewportOptions,
+    renderTicker: Ticker,
+    worldSize: WorldSize
+  ) {
+    super({
+      ...options,
+      worldWidth: worldSize.width,
+      worldHeight: worldSize.height
+    });
     this.renderTicker = renderTicker;
     this.players = {};
     this.playersIterable = [];
@@ -54,9 +65,15 @@ class GameWorld extends Viewport {
     this.engineConfig = engineConfig;
   }
 
-  initializeWorld() {
-    this.addChild(new Sprite(Texture.from(background)));
-    const dt = 1 - 0.01 ** (1 / this.engineConfig.updateRate);
+  initializeWorld(worldSize: WorldSize) {
+    const backgroundTexture = Texture.from(background);
+    const backgroundSprite = new TilingSprite(
+      backgroundTexture,
+      worldSize.width,
+      worldSize.height
+    );
+    this.addChild(backgroundSprite);
+    const dt = 1 - 10e-7 ** (1 / this.engineConfig.updateRate);
     this.renderTicker.add(() => {
       this.gameObjectsIterable.forEach(go => {
         go.position = lerp(go.position, go.actualPosition, dt);
