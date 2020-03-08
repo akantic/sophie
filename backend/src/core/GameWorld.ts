@@ -1,7 +1,8 @@
-import Matter, { Body } from "matter-js";
+import Matter, { World, Body, Bodies } from "matter-js";
 import Game from "./Game";
 import Player from "../models/Player";
 import GameObject from "../models/GameObject";
+import { WORLD_WIDTH, WORLD_HEIGHT, BOUND_SIZE } from "../consts";
 
 class GameWorld {
   private readonly _players: { [key: string]: Player };
@@ -16,12 +17,40 @@ class GameWorld {
     this._players = {};
     this._playersIterable = [];
 
-    // const topWall = Bodies.rectangle(0, 300, 600, 20, { isStatic: true });
-    // const leftWall = Bodies.rectangle(-300, 0, 20, 600, { isStatic: true });
-    // const rightWall = Bodies.rectangle(300, 0, 20, 600, { isStatic: true });
-    // const bottomWall = Bodies.rectangle(0, -300, 600, 20, { isStatic: true });
+    const topWall = Bodies.rectangle(
+      WORLD_WIDTH / 2,
+      0,
+      WORLD_WIDTH,
+      BOUND_SIZE,
+      {
+        isStatic: true
+      }
+    );
+    const bottomWall = Bodies.rectangle(
+      WORLD_WIDTH / 2,
+      WORLD_HEIGHT,
+      WORLD_WIDTH,
+      BOUND_SIZE,
+      { isStatic: true }
+    );
+    const leftWall = Bodies.rectangle(
+      0,
+      WORLD_HEIGHT / 2,
+      BOUND_SIZE,
+      WORLD_HEIGHT,
+      {
+        isStatic: true
+      }
+    );
+    const rightWall = Bodies.rectangle(
+      WORLD_WIDTH,
+      WORLD_HEIGHT / 2,
+      BOUND_SIZE,
+      WORLD_HEIGHT,
+      { isStatic: true }
+    );
 
-    // World.add(Game.world, [topWall, leftWall, rightWall, bottomWall]);
+    World.add(Game.get().world, [topWall, bottomWall, leftWall, rightWall]);
   }
 
   addBody = (body: Body) => {

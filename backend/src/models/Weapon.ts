@@ -61,12 +61,12 @@ class Weapon {
     const body = Bodies.circle(
       pPosition.x + projectilePositionOffset.x,
       pPosition.y + projectilePositionOffset.y,
-      this.projectileBodyRadius
+      this.projectileBodyRadius,
+      { density: 1 }
     );
     body.friction = 0;
     body.frictionAir = 0;
     body.frictionStatic = 0;
-    Body.setDensity(body, Number.MAX_SAFE_INTEGER);
     GameWorld.addBody(body);
 
     Body.setVelocity(body, velocity);
