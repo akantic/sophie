@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
-import { canvas } from "./game/index";
+import { pixiApp } from "./game/index";
+import "./App.scss";
 
 const App: React.FC = () => {
   useEffect(() => {
     const gameWindow = document.getElementById("game-window");
-    gameWindow.appendChild(canvas);
+    gameWindow.appendChild(pixiApp.view);
   }, []);
 
   return (
-    <div className="App">
-      <header className="App-header">Welcome to Sophie!</header>
+    <div id="application">
       <div id="game-window"></div>
     </div>
   );

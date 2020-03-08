@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import "./DebugContainer.scss";
 
 const DebugContainer: React.FC = () => {
   useEffect(() => {
@@ -12,8 +13,7 @@ const DebugContainer: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <header className="header">Sophie Debugger</header>
+    <div id="debugger">
       <img id="debug-image" src="" />
     </div>
   );

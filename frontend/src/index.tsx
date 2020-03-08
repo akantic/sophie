@@ -7,4 +7,4 @@ if (m.hot) {
   m.hot.accept();
 }
 
-ReactDOM.render(<App />, document.getElementById("ui"));
+ReactDOM.render(<App />, document.getElementById("root"));

@@ -7,4 +7,4 @@ if (m.hot) {
   m.hot.accept();
 }
 
-ReactDOM.render(<Debugger />, document.getElementById("debugger"));
+ReactDOM.render(<Debugger />, document.getElementById("root"));

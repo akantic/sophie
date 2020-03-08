@@ -33,6 +33,10 @@ module.exports = {
         use: ["html-loader"]
       },
       {
+        test: /\.s[ac]ss$/i,
+        use: ["style-loader", "css-loader", "sass-loader"]
+      },
+      {
         test: /\.(png|svg|jpg|gif)$/,
         loader: "file-loader",
         options: {
@@ -42,7 +46,7 @@ module.exports = {
     ]
   },
   devServer: {
-    host: '0.0.0.0',
+    host: "0.0.0.0",
     contentBase: "./dist",
     port: 3000,
     hot: true
@@ -54,9 +58,9 @@ module.exports = {
       template: path.resolve(__dirname, "public", "index.html")
     }),
     new HtmlWebpackPlugin({
-      filename: "debug.html",
+      filename: "debug",
       chunks: ["debug"],
-      template: path.resolve(__dirname, "public", "debug.html")
+      template: path.resolve(__dirname, "public", "index.html")
     })
   ]
 };
