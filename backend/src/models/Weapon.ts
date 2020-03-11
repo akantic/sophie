@@ -67,12 +67,12 @@ class Weapon {
     body.friction = 0;
     body.frictionAir = 0;
     body.frictionStatic = 0;
-    GameWorld.addBody(body);
 
     Body.setVelocity(body, velocity);
 
     this.lastFired = Date.now();
     const projectile = new Projectile(player, body, this.damage);
+    GameWorld.get().addObject(projectile);
 
     NetworkServer.get().broadcast(
       ProjectileSpawnedMessage.create(

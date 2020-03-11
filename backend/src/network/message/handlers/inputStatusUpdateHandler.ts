@@ -1,6 +1,7 @@
 import { InputStatusUpdateMessage } from "@sophie/shared";
 
-import gameWorld from "../../../core/GameWorld";
+import GameWorld from "../../../core/GameWorld";
+import Player from "../../../models/Player";
 
 export default function inputStatusUpdateHandler(
   message: InputStatusUpdateMessage
@@ -9,7 +10,7 @@ export default function inputStatusUpdateHandler(
     playerId,
     payload: { direction, rotation, mouseDown }
   } = message;
-  const player = gameWorld.getPlayer(playerId);
+  const player = GameWorld.get().getObject(playerId) as Player;
   player.move(direction);
   player.setRotation(rotation);
   if (mouseDown) {

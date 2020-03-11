@@ -6,12 +6,12 @@ import NetworkMessage from "./NetworkMessage";
 
 class GameObjectDestroyedMessage extends NetworkMessage {
   readonly payload: {
-    id: string;
+    id: string | number;
     label: Label;
     position: Vector;
   };
 
-  private constructor(id: string, label: Label, position: Vector) {
+  private constructor(id: string | number, label: Label, position: Vector) {
     super(MessageType.GameObjectDestroyedMessage);
     this.payload = {
       id,
@@ -20,7 +20,7 @@ class GameObjectDestroyedMessage extends NetworkMessage {
     };
   }
 
-  static create(id: string, label: Label, position: Vector) {
+  static create(id: string | number, label: Label, position: Vector) {
     return new GameObjectDestroyedMessage(id, label, position);
   }
 

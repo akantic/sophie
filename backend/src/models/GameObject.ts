@@ -1,20 +1,24 @@
-import { Body, Events, IPair } from "matter-js";
+import { Body } from "matter-js";
 import { Label } from "@sophie/shared";
 
 class GameObject {
-  readonly id: string;
+  readonly id: number;
 
   readonly label: Label;
 
   body: Body;
 
-  constructor(label: Label) {
-    this.id = Math.round(Math.random() * 36 ** 12).toString(36);
+  health: number;
+
+  constructor(body: Body, label: Label) {
+    this.body = body;
     this.label = label;
+    this.id = body.id;
+    body.label = label;
   }
 
-  onCollision = (f: (collisionPair: IPair) => void) => {
-    Events.on(this.body, "collisionStart", pair => f(pair));
+  takeDamage = (amount: number) => {
+    this.health -= amount;
   };
 }
 

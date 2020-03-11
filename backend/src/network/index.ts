@@ -5,11 +5,15 @@ import {
   PlayerLeftMessage
 } from "@sophie/shared";
 
-import gameWorld from "../core/GameWorld";
-import Game from "../core/Game";
+import GameWorld from "../core/GameWorld";
 import Player from "../models/Player";
 import NetworkServer from "./NetworkServer";
-import { WORLD_WIDTH, WORLD_HEIGHT } from "../consts";
+import {
+  WORLD_WIDTH,
+  WORLD_HEIGHT,
+  NETWORK_UPDATE_RATE,
+  GAME_UPDATE_RATE
+} from "../consts";
 
 export function connectionHandler(
   ws: WebSocket,
@@ -18,17 +22,17 @@ export function connectionHandler(
   ws.onmessage = messageDecoder.processMessage;
   const player = Player.create(ws);
   ws.onclose = () => {
-    gameWorld.removePlayer(player.id);
+    GameWorld.get().removeObject(player.id);
     NetworkServer.get().broadcast(PlayerLeftMessage.create(player.id));
     console.log(`Removed player ${player.id}`);
   };
-  gameWorld.addPlayer(player);
+  GameWorld.get().addObject(player);
   console.log(`Added player ${player.id}`);
   NetworkServer.get().send(
     PlayerConnectionReplyMessage.create(
       player.id,
-      Game.get().engineConfig,
-      Game.get().worldStatus,
+      { updateRate: GAME_UPDATE_RATE, networkUpdateRate: NETWORK_UPDATE_RATE },
+      { players: GameWorld.get().syncedObjects.map(id => ({ id })) },
       { width: WORLD_WIDTH, height: WORLD_HEIGHT }
     ),
     player

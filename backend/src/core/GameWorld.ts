@@ -1,81 +1,66 @@
-import Matter, { World, Body, Bodies } from "matter-js";
-import Game from "./Game";
-import Player from "../models/Player";
+import Matter, { World, Body } from "matter-js";
+
 import GameObject from "../models/GameObject";
-import { WORLD_WIDTH, WORLD_HEIGHT, BOUND_SIZE } from "../consts";
+import GameObjectSync from "../models/GameObjectSync";
+import { getStaticBodies } from "../world/loader";
 
 class GameWorld {
-  private readonly _players: { [key: string]: Player };
+  static instance: GameWorld;
 
-  private _playersIterable: Player[];
+  static get = (): GameWorld => {
+    return GameWorld.instance;
+  };
 
-  get playersI(): Player[] {
-    return this._playersIterable;
-  }
+  static create = (world: World) => {
+    GameWorld.instance = new GameWorld(world);
+    return GameWorld.instance;
+  };
 
-  constructor() {
-    this._players = {};
-    this._playersIterable = [];
+  gameObjects: { [key: number]: GameObject };
 
-    const topWall = Bodies.rectangle(
-      WORLD_WIDTH / 2,
-      0,
-      WORLD_WIDTH,
-      BOUND_SIZE,
-      {
-        isStatic: true
-      }
-    );
-    const bottomWall = Bodies.rectangle(
-      WORLD_WIDTH / 2,
-      WORLD_HEIGHT,
-      WORLD_WIDTH,
-      BOUND_SIZE,
-      { isStatic: true }
-    );
-    const leftWall = Bodies.rectangle(
-      0,
-      WORLD_HEIGHT / 2,
-      BOUND_SIZE,
-      WORLD_HEIGHT,
-      {
-        isStatic: true
-      }
-    );
-    const rightWall = Bodies.rectangle(
-      WORLD_WIDTH,
-      WORLD_HEIGHT / 2,
-      BOUND_SIZE,
-      WORLD_HEIGHT,
-      { isStatic: true }
-    );
+  syncedObjects: number[];
 
-    World.add(Game.get().world, [topWall, bottomWall, leftWall, rightWall]);
+  world: World;
+
+  private constructor(world: World) {
+    this.world = world;
+    this.gameObjects = {};
+    this.syncedObjects = [];
+    World.add(this.world, getStaticBodies());
   }
 
   addBody = (body: Body) => {
-    Game.get().world.bodies.push(body);
+    World.add(this.world, body);
   };
 
-  addPlayer = (player: Player) => {
-    this.addBody(player.body);
-    this._players[player.id] = player;
-    this._playersIterable = Object.values(this._players);
+  removeBody = (body: Body) => {
+    Matter.Composite.remove(this.world, body);
   };
 
-  removePlayer = (playerId: string) => {
-    this.destroy(this._players[playerId]);
-    delete this._players[playerId];
-    this._playersIterable = Object.values(this._players);
+  addObject = (go: GameObject) => {
+    this.addBody(go.body);
+    this.gameObjects[go.id] = go;
+    if (go instanceof GameObjectSync) {
+      this.syncedObjects.push(go.id);
+    }
   };
 
-  getPlayer = (playerId: string) => {
-    return this._players[playerId];
+  removeObject = (id: number) => {
+    this.removeBody(this.gameObjects[id].body);
+    this.syncedObjects = this.syncedObjects.filter(i => i !== id);
+    delete this.gameObjects[id];
+    // NetworkServer.get().broadcast(
+    //   GameObjectDestroyedMessage.create(
+    //     this.id,
+    //     this.label,
+    //     this.body.position
+    //   )
+    // );
   };
 
-  destroy = (gameObject: GameObject) => {
-    Matter.Composite.remove(Game.get().world, gameObject.body);
+  getObject = (id: number) => {
+    return this.gameObjects[id];
   };
 }
 
-export default new GameWorld();
+export default GameWorld;

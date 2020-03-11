@@ -3,7 +3,7 @@ import { MessageDecoder, MessageType } from "@sophie/shared";
 import { connectionHandler } from "./network";
 import inputStatusUpdateHandler from "./network/message/handlers/inputStatusUpdateHandler";
 import NetworkServer from "./network/NetworkServer";
-import Game from "./core/Game";
+import GameLoop from "./core/GameLoop";
 import engineRenderer from "./debug/EngineRenderer";
 
 const wss = new WebSocket.Server({
@@ -21,6 +21,6 @@ wss.on("connection", ws => connectionHandler(ws as any, messageDecoder));
 // Initialize network server
 NetworkServer.create(wss);
 
-Game.get().start();
+GameLoop.get().start();
 
-engineRenderer.run(Game.get().engine, 100);
+engineRenderer.run(GameLoop.get().engine, 200);

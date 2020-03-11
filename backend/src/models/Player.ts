@@ -11,25 +11,24 @@ import {
   WORLD_HEIGHT,
   BOUND_SIZE
 } from "../consts";
-import GameObject from "./GameObject";
+import GameObjectSync from "./GameObjectSync";
 
-class Player extends GameObject {
+class Player extends GameObjectSync {
   socket: WebSocket;
 
   weapon: Weapon;
 
   private constructor(socket: WebSocket) {
-    super(Label.Player);
-    this.socket = socket;
-    this.body = Bodies.circle(
-      BOUND_SIZE + Math.floor(Math.random() * WORLD_WIDTH - BOUND_SIZE),
-      Math.floor(Math.random() * WORLD_HEIGHT - BOUND_SIZE),
-      PLAYER_BODY_RADIUS,
-      { density: 100 }
+    super(
+      Bodies.circle(
+        BOUND_SIZE + Math.floor(Math.random() * WORLD_WIDTH - BOUND_SIZE),
+        Math.floor(Math.random() * WORLD_HEIGHT - BOUND_SIZE),
+        PLAYER_BODY_RADIUS,
+        { density: 100, friction: 0, frictionStatic: 0, frictionAir: 0.5 }
+      ),
+      Label.Player
     );
-    this.body.friction = 0;
-    this.body.frictionStatic = 0;
-    this.body.frictionAir = 0.5;
+
     const w = Weapons[0];
     this.weapon = new Weapon(
       w.id,
@@ -39,6 +38,7 @@ class Player extends GameObject {
       w.projectileSpeed,
       w.projectileBodyRadius
     );
+    this.socket = socket;
   }
 
   move = (direction: Vector) => {

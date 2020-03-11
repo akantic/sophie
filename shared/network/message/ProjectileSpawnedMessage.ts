@@ -5,7 +5,7 @@ import NetworkMessage from "./NetworkMessage";
 
 class ProjectileSpawnedMessage extends NetworkMessage {
   readonly payload: {
-    id: string;
+    id: string | number;
     position: Vector;
     rotation: number;
     spriteId: string;
@@ -13,7 +13,7 @@ class ProjectileSpawnedMessage extends NetworkMessage {
   };
 
   private constructor(
-    id: string,
+    id: string | number,
     position: Vector,
     rotation: number,
     spriteId: string,
@@ -30,7 +30,7 @@ class ProjectileSpawnedMessage extends NetworkMessage {
   }
 
   static create(
-    id: string,
+    id: string | number,
     position: Vector,
     rotation: number,
     spriteId: string,

@@ -2,7 +2,7 @@ import MessageType from "./MessageType";
 import NetworkMessage from "./NetworkMessage";
 
 export type WorldStatus = {
-  players: { id: string }[];
+  players: { id: string | number }[];
 };
 
 export type EngineConfig = {
@@ -17,14 +17,14 @@ export type WorldSize = {
 
 class PlayerConnectionReplyMessage extends NetworkMessage {
   readonly payload: {
-    playerId: string;
+    playerId: string | number;
     engineConfig: EngineConfig;
     worldStatus: WorldStatus;
     worldSize: WorldSize;
   };
 
   private constructor(
-    playerId: string,
+    playerId: string | number,
     engineConfig: EngineConfig,
     worldStatus: WorldStatus,
     worldSize: WorldSize
@@ -34,7 +34,7 @@ class PlayerConnectionReplyMessage extends NetworkMessage {
   }
 
   static create(
-    playerId: string,
+    playerId: string | number,
     engineConfig: EngineConfig,
     worldStatus: WorldStatus,
     worldSize: WorldSize

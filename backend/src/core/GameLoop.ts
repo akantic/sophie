@@ -1,22 +1,19 @@
 import Matter, { Engine, World, IPair, IEventCollision } from "matter-js";
-import {
-  WorldStatusUpdateMessage,
-  EngineConfig,
-  WorldStatus
-} from "@sophie/shared";
+import { WorldStatusUpdateMessage } from "@sophie/shared";
 
 import { GAME_UPDATE_RATE, NETWORK_UPDATE_RATE } from "../consts";
 import GameWorld from "./GameWorld";
 import NetworkServer from "../network/NetworkServer";
+import CollisionResolver from "./collision/CollisionResolver";
 
-class Game {
-  static instance: Game;
+class GameLoop {
+  static instance: GameLoop;
 
-  static get = (): Game => {
-    if (!Game.instance) {
-      Game.instance = new Game();
+  static get = (): GameLoop => {
+    if (!GameLoop.instance) {
+      GameLoop.instance = new GameLoop();
     }
-    return Game.instance;
+    return GameLoop.instance;
   };
 
   private static readonly DELTA = 1000 / GAME_UPDATE_RATE;
@@ -33,21 +30,6 @@ class Game {
     return this._engine;
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  get worldStatus(): WorldStatus {
-    return {
-      players: GameWorld.playersI.map(p => ({ id: p.id }))
-    };
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  get engineConfig(): EngineConfig {
-    return {
-      updateRate: GAME_UPDATE_RATE,
-      networkUpdateRate: NETWORK_UPDATE_RATE
-    };
-  }
-
   private _gameIntervalId: NodeJS.Timeout;
 
   private _networkIntervalId: NodeJS.Timeout;
@@ -55,29 +37,31 @@ class Game {
   private constructor() {
     this._engine = Engine.create();
     this._engine.world.gravity.y = 0;
+    GameWorld.create(this._engine.world);
 
     Matter.Events.on(
       this._engine,
       "collisionStart",
       (event: IEventCollision<Engine>) => {
         event.pairs.forEach((pair: IPair) => {
-          Matter.Events.trigger(pair.bodyA, "collisionStart", pair as any);
-          Matter.Events.trigger(pair.bodyB, "collisionStart", pair as any);
+          CollisionResolver.resolve(pair);
         });
       }
     );
   }
 
   private update = () => {
-    Engine.update(this._engine, Game.DELTA);
+    Engine.update(this._engine, GameLoop.DELTA);
   };
 
+  // TODO: Remove this from here
   private networkUpdate = () => {
-    if (GameWorld.playersI.length > 0) {
-      const playersWorldStatus = GameWorld.playersI.map(p => ({
-        playerId: p.id,
-        position: p.body.position,
-        rotation: p.body.angle
+    const gw = GameWorld.get();
+    if (gw.syncedObjects.length > 0) {
+      const playersWorldStatus = gw.syncedObjects.map(id => ({
+        playerId: id,
+        position: gw.gameObjects[id].body.position,
+        rotation: gw.gameObjects[id].body.angle
       }));
       NetworkServer.get().broadcast(
         WorldStatusUpdateMessage.create(playersWorldStatus)
@@ -86,10 +70,10 @@ class Game {
   };
 
   start = () => {
-    this._gameIntervalId = setInterval(this.update, Game.DELTA);
+    this._gameIntervalId = setInterval(this.update, GameLoop.DELTA);
     this._networkIntervalId = setInterval(
       this.networkUpdate,
-      Game.NETWORK_DELTA
+      GameLoop.NETWORK_DELTA
     );
   };
 
@@ -99,4 +83,4 @@ class Game {
   };
 }
 
-export default Game;
+export default GameLoop;
