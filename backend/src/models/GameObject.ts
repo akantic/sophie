@@ -2,7 +2,7 @@ import { Body } from "matter-js";
 import { Label } from "@sophie/shared";
 
 class GameObject {
-  readonly id: number;
+  readonly id: string;
 
   readonly label: Label;
 
@@ -13,7 +13,7 @@ class GameObject {
   constructor(body: Body, label: Label) {
     this.body = body;
     this.label = label;
-    this.id = body.id;
+    this.id = String(body.id);
     body.label = label;
   }
 

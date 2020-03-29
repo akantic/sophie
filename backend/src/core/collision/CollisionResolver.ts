@@ -1,6 +1,6 @@
 import { IPair, Body } from "matter-js";
 
-import GameWorld from "../GameWorld";
+import GameWorld from "../world/GameWorld";
 import plugins from "./plugins";
 
 export type CollisionPlugin = (

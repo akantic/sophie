@@ -1,8 +1,6 @@
 import { Bodies, Body, Vector } from "matter-js";
-import { ProjectileSpawnedMessage } from "@sophie/shared";
 
-import NetworkServer from "../network/NetworkServer";
-import GameWorld from "../core/GameWorld";
+import GameWorld from "../core/world/GameWorld";
 import Player from "./Player";
 import Projectile from "./Projectile";
 
@@ -73,16 +71,6 @@ class Weapon {
     this.lastFired = Date.now();
     const projectile = new Projectile(player, body, this.damage);
     GameWorld.get().addObject(projectile);
-
-    NetworkServer.get().broadcast(
-      ProjectileSpawnedMessage.create(
-        projectile.id,
-        projectile.body.position,
-        player.body.angle,
-        "id",
-        velocity
-      )
-    );
   };
 }
 

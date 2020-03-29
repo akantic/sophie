@@ -1,6 +1,6 @@
 import { InputStatusUpdateMessage } from "@sophie/shared";
 
-import GameWorld from "../../../core/GameWorld";
+import GameWorld from "../GameWorld";
 import Player from "../../../models/Player";
 
 export default function inputStatusUpdateHandler(

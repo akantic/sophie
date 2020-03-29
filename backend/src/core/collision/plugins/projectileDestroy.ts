@@ -1,7 +1,7 @@
 import { Label } from "@sophie/shared";
 import { Body } from "matter-js";
 
-import GameWorld from "../../GameWorld";
+import GameWorld from "../../world/GameWorld";
 
 export default function plugin(
   body: Body,
@@ -10,6 +10,6 @@ export default function plugin(
 ): void {
   const go = gameWorld.gameObjects[body.id];
   if (go && go.label === Label.Projectile) {
-    gameWorld.removeObject(body.id);
+    gameWorld.removeObject(String(body.id));
   }
 }

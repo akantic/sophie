@@ -38,7 +38,7 @@ class NetworkClient {
       [MessageType.GameObjectDestroyedMessage]: gameObjectDestroyedHandler
     };
 
-    const messageDecoder = new MessageDecoder(handlers);
+    const messageDecoder = MessageDecoder.from(handlers);
 
     this.socket.onopen = () => {
       console.log("Connected!");

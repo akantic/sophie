@@ -14,11 +14,9 @@ import {
 import GameObjectSync from "./GameObjectSync";
 
 class Player extends GameObjectSync {
-  socket: WebSocket;
-
   weapon: Weapon;
 
-  private constructor(socket: WebSocket) {
+  private constructor() {
     super(
       Bodies.circle(
         BOUND_SIZE + Math.floor(Math.random() * WORLD_WIDTH - BOUND_SIZE),
@@ -38,7 +36,6 @@ class Player extends GameObjectSync {
       w.projectileSpeed,
       w.projectileBodyRadius
     );
-    this.socket = socket;
   }
 
   move = (direction: Vector) => {
@@ -53,8 +50,8 @@ class Player extends GameObjectSync {
     this.weapon.fire(this);
   };
 
-  static create(socket: WebSocket) {
-    return new Player(socket);
+  static create() {
+    return new Player();
   }
 }
 

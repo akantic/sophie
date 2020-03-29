@@ -4,7 +4,7 @@ import MessageType from "./MessageType";
 import NetworkMessage from "./NetworkMessage";
 
 interface PlayerStatus {
-  playerId: string | number;
+  playerId: string;
   position: Vector;
   rotation: number;
 }

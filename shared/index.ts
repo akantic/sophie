@@ -17,6 +17,9 @@ export { default as GameObjectDestroyedMessage } from "./network/message/GameObj
 
 export { default as NetworkMessage } from "./network/message/NetworkMessage";
 export { default as MessageType } from "./network/message/MessageType";
-export { default as MessageDecoder } from "./network/protocol/MessageDecoder";
+export {
+  default as MessageDecoder,
+  MessageHandlers
+} from "./network/protocol/MessageDecoder";
 
 export { Label } from "./game/labels";

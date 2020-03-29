@@ -1,16 +1,20 @@
 import NetworkMessage from "../message/NetworkMessage";
 import MessageType from "../message/MessageType";
 
-type MessageHandlers = {
+export type MessageHandlers = {
   [key in MessageType]?: (message: NetworkMessage) => void;
 };
 
 class MessageDecoder {
   private readonly handlers: MessageHandlers;
 
-  constructor(handlers: MessageHandlers) {
+  private constructor(handlers: MessageHandlers) {
     this.handlers = handlers;
   }
+
+  static from = (handlers: MessageHandlers) => {
+    return new MessageDecoder(handlers);
+  };
 
   stringMessageHandler = (e: MessageEvent) => {
     const message = JSON.parse(e.data) as NetworkMessage;

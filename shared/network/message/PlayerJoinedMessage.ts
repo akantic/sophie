@@ -3,15 +3,15 @@ import NetworkMessage from "./NetworkMessage";
 
 class PlayerJoinedMessage extends NetworkMessage {
   readonly payload: {
-    playerId: string | number;
+    playerId: string;
   };
 
-  private constructor(playerId: string | number) {
+  private constructor(playerId: string) {
     super(MessageType.PlayerJoined);
     this.payload = { playerId };
   }
 
-  static create(playerId: string | number) {
+  static create(playerId: string) {
     return new PlayerJoinedMessage(playerId);
   }
 
