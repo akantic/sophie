@@ -1,13 +1,11 @@
 import NetworkMessage from "./NetworkMessage";
 
 enum MessageType {
-  PlayerConnectionReply,
-  PlayerJoined,
-  PlayerLeft,
-  ProjectileSpawned,
+  ConnectionReply,
   InputStatusUpdate,
   WorldStatusUpdate,
-  GameObjectDestroyedMessage
+  GameObjectDestroyedMessage,
+  GameObjectSpawnedMessage
 }
 
 export interface ClientMessage extends NetworkMessage {

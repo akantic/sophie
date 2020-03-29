@@ -4,24 +4,18 @@ import { Label } from "../../game/labels";
 import MessageType from "./MessageType";
 import NetworkMessage from "./NetworkMessage";
 
-class GameObjectDestroyedMessage extends NetworkMessage {
-  readonly payload: {
-    id: string;
-    label: Label;
-    position: Vector;
-  };
+type Payload = { id: string; label: Label; position: Vector };
 
-  private constructor(id: string, label: Label, position: Vector) {
+class GameObjectDestroyedMessage extends NetworkMessage {
+  readonly payload: Payload;
+
+  private constructor(payload: Payload) {
     super(MessageType.GameObjectDestroyedMessage);
-    this.payload = {
-      id,
-      label,
-      position
-    };
+    this.payload = payload;
   }
 
-  static create(id: string, label: Label, position: Vector) {
-    return new GameObjectDestroyedMessage(id, label, position);
+  static create(payload: Payload) {
+    return new GameObjectDestroyedMessage(payload);
   }
 
   encode = () => {

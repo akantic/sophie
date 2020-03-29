@@ -7,7 +7,7 @@ export const pixiApp = new PIXI.Application({
   width: VIEW_WIDTH,
   height: VIEW_HEIGHT,
   backgroundColor: 0x1099bb,
-  resolution: window.devicePixelRatio || 1
+  resolution: 1
 });
 
 NetworkClient.create();

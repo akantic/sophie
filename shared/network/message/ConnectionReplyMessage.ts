@@ -15,7 +15,7 @@ export type WorldSize = {
   height: number;
 };
 
-class PlayerConnectionReplyMessage extends NetworkMessage {
+class ConnectionReplyMessage extends NetworkMessage {
   readonly payload: {
     playerId: string;
     engineConfig: EngineConfig;
@@ -29,7 +29,7 @@ class PlayerConnectionReplyMessage extends NetworkMessage {
     worldStatus: WorldStatus,
     worldSize: WorldSize
   ) {
-    super(MessageType.PlayerConnectionReply);
+    super(MessageType.ConnectionReply);
     this.payload = { playerId, engineConfig, worldStatus, worldSize };
   }
 
@@ -39,7 +39,7 @@ class PlayerConnectionReplyMessage extends NetworkMessage {
     worldStatus: WorldStatus,
     worldSize: WorldSize
   ) {
-    return new PlayerConnectionReplyMessage(
+    return new ConnectionReplyMessage(
       playerId,
       engineConfig,
       worldStatus,
@@ -52,4 +52,4 @@ class PlayerConnectionReplyMessage extends NetworkMessage {
   };
 }
 
-export default PlayerConnectionReplyMessage;
+export default ConnectionReplyMessage;

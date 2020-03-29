@@ -1,10 +1,10 @@
 import {
   NetworkMessage,
-  PlayerJoinedMessage,
   WorldStatusUpdateMessage,
   MessageDecoder,
-  PlayerConnectionReplyMessage,
-  PlayerLeftMessage
+  ConnectionReplyMessage,
+  GameObjectSpawnedMessage,
+  GameObjectDestroyedMessage
 } from "@sophie/shared";
 
 import handlers from "./handlers";
@@ -20,6 +20,7 @@ import GameWorld from "./GameWorld";
 
 import Player from "../../models/Player";
 import GameObjectSync from "../../models/GameObjectSync";
+import GameObject from "../../models/GameObject";
 
 export interface SocketServer {
   send: (msg: NetworkMessage, id: string) => void;
@@ -58,9 +59,7 @@ class GameWorldController {
 
     server.onConnect = () => {
       const player = Player.create();
-      server.broadcastReliable(PlayerJoinedMessage.create(player.id));
-
-      const reply = PlayerConnectionReplyMessage.create(
+      const reply = ConnectionReplyMessage.create(
         player.id,
         {
           updateRate: GAME_UPDATE_RATE,
@@ -80,41 +79,65 @@ class GameWorldController {
 
     server.onDisconnect = (id: string) => () => {
       this.syncedObjects = this.syncedObjects.filter(i => i !== id);
+      const go = GameWorld.get().getObject(id);
       GameWorld.get().removeObject(id);
-      server.broadcast(PlayerLeftMessage.create(id));
+      server.broadcast(
+        GameObjectDestroyedMessage.create({
+          id,
+          label: go.label,
+          position: go.body.position
+        })
+      );
+      if (this.syncedObjects.length === 0) {
+        this.stopSync();
+      }
       console.log(`Removed player ${id}`);
     };
 
     server.onMessage = MessageDecoder.from(handlers).processMessage;
     this.server = server;
 
-    gameWorld.gameObjectProxies.set.push((_target, _prop, value) => {
-      if (value instanceof GameObjectSync) {
-        this.syncedObjects.push(value.id);
+    gameWorld.gameObjectProxies.set.push(
+      (_target, _prop, value: GameObject) => {
+        if (value instanceof GameObjectSync) {
+          this.syncedObjects.push(value.id);
+        }
+        this.server.broadcastReliable(
+          GameObjectSpawnedMessage.create({
+            objectId: value.id,
+            label: value.label,
+            position: value.body.position,
+            rotation: value.body.angle,
+            velocity: value.body.velocity
+          })
+        );
       }
-      // this.server.broadcastReliable(ObjectSpawnedMessage.create());
-    });
+    );
 
-    gameWorld.gameObjectProxies.delete.push((_target, prop) => {
-      if (prop instanceof GameObjectSync) {
-        this.syncedObjects = this.syncedObjects.filter(id => id !== prop.id);
+    gameWorld.gameObjectProxies.delete.push(
+      (_target, _prop, value: GameObject) => {
+        if (value instanceof GameObjectSync) {
+          this.syncedObjects = this.syncedObjects.filter(id => id !== value.id);
+        }
+        this.server.broadcastReliable(
+          GameObjectDestroyedMessage.create({
+            id: value.id,
+            label: value.label,
+            position: value.body.position
+          })
+        );
       }
-      // this.server.broadcastReliable(ObjectDestroyedMessage.create());
-    });
+    );
   }
 
   private networkSync = () => {
     const gw = GameWorld.get();
-    if (this.syncedObjects.length > 0) {
-      const playersWorldStatus = this.syncedObjects.map(id => ({
-        playerId: id,
-        position: gw.gameObjects[id].body.position,
-        rotation: gw.gameObjects[id].body.angle
-      }));
-      this.server.broadcast(
-        WorldStatusUpdateMessage.create(playersWorldStatus)
-      );
-    }
+    const playersWorldStatus = this.syncedObjects.map(id => ({
+      playerId: id,
+      position: gw.gameObjects[id].body.position,
+      rotation: gw.gameObjects[id].body.angle
+    }));
+    this.server.broadcast(WorldStatusUpdateMessage.create(playersWorldStatus));
   };
 
   startSync = () => {
@@ -126,6 +149,7 @@ class GameWorldController {
 
   stopSync = () => {
     clearInterval(this.syncIntervalId);
+    this.syncIntervalId = null;
   };
 }
 

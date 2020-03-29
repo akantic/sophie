@@ -38,8 +38,10 @@ class GameWorld {
       },
       deleteProperty: (target, prop) => {
         if (prop in target) {
+          this.gameObjectProxies.delete.forEach(proxy =>
+            proxy(target, prop, target[prop])
+          );
           delete target[prop];
-          this.gameObjectProxies.delete.forEach(proxy => proxy(target, prop));
           return true;
         }
         return false;
@@ -60,25 +62,25 @@ class GameWorld {
     World.add(this.world, getStaticBodies());
   }
 
-  addBody = (body: Body) => {
+  addBody = (body: Body): void => {
     World.add(this.world, body);
   };
 
-  removeBody = (body: Body) => {
+  removeBody = (body: Body): void => {
     Matter.Composite.remove(this.world, body);
   };
 
-  addObject = (go: GameObject) => {
+  addObject = (go: GameObject): void => {
     this.addBody(go.body);
     this.gameObjects[go.id] = go;
   };
 
-  removeObject = (id: string) => {
+  removeObject = (id: string): void => {
     this.removeBody(this.gameObjects[id].body);
     delete this.gameObjects[id];
   };
 
-  getObject = (id: string) => {
+  getObject = (id: string): GameObject => {
     return this.gameObjects[id];
   };
 }

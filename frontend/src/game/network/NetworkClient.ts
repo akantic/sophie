@@ -5,10 +5,8 @@ import {
   ClientMessage
 } from "@sophie/shared";
 import worldStatusUpdateHandler from "./message/handlers/worldStatusUpdateHandler";
-import playerConnectionReplyHandler from "./message/handlers/playerConnectionReplyHandler";
-import playerJoinedHandler from "./message/handlers/playerJoinedHandler";
-import playerLeftHandler from "./message/handlers/playerLeftHandler";
-import projectileSpawnedHandler from "./message/handlers/projectileSpawnedHandler";
+import connectionReplyHandler from "./message/handlers/connectionReplyHandler";
+import gameObjectSpawnedHandler from "./message/handlers/gameObjectSpawnedHandler";
 import gameObjectDestroyedHandler from "./message/handlers/gameObjectDestroyedHandler";
 import GameWorld from "../models/GameWorld";
 
@@ -31,10 +29,8 @@ class NetworkClient {
 
     const handlers = {
       [MessageType.WorldStatusUpdate]: worldStatusUpdateHandler,
-      [MessageType.PlayerJoined]: playerJoinedHandler,
-      [MessageType.PlayerLeft]: playerLeftHandler,
-      [MessageType.PlayerConnectionReply]: playerConnectionReplyHandler,
-      [MessageType.ProjectileSpawned]: projectileSpawnedHandler,
+      [MessageType.ConnectionReply]: connectionReplyHandler,
+      [MessageType.GameObjectSpawnedMessage]: gameObjectSpawnedHandler,
       [MessageType.GameObjectDestroyedMessage]: gameObjectDestroyedHandler
     };
 

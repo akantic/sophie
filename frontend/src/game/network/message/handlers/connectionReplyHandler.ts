@@ -1,10 +1,10 @@
-import { PlayerConnectionReplyMessage } from "@sophie/shared";
+import { ConnectionReplyMessage } from "@sophie/shared";
 
 import GameWorld from "../../../models/GameWorld";
 import { pixiApp } from "../../../index";
 
 export default function playerConnectionReplyHandler(
-  message: PlayerConnectionReplyMessage
+  message: ConnectionReplyMessage
 ) {
   const { playerId, engineConfig, worldStatus, worldSize } = message.payload;
 
