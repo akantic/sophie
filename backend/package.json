@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "matter-js": "^0.14.2",
-    "ws": "^7.2.0"
+    "ws": "^7.4.6"
   },
   "devDependencies": {
     "@types/matter-js": "^0.10.9",
